@@ -63,5 +63,5 @@ def update_config(app, config):
 		except KeyError:
 			update=None
 	
-	return response['result']
+	return update
 	
