@@ -6,6 +6,7 @@ for more infos : http://dev.freebox.fr/sdk/os/wifi/
 import requests
 import json
 
+
 def get_config(app):
 	'''
 	GET /api/v2/wifi/config/

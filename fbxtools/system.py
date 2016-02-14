@@ -6,6 +6,7 @@ for more infos : http://dev.freebox.fr/sdk/os/system/
 import requests
 import json
 
+
 def get_system_info(app):
 	'''
 	GET /api/v3/system/
