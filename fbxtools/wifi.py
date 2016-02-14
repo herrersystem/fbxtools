@@ -90,7 +90,7 @@ def reset_config(app):
 	return reset
 
 
-def get_ap(app, _id=''):
+def get_config_ap(app, _id=''):
 	'''
 	GET /api/v2/wifi/ap/{id}
 	'''
@@ -271,7 +271,7 @@ def get_ap_neighbors(app, _id):
 	return neighbors
 
 
-def get_mac_filter(app, _id=''):
+def get_config_macfilter(app, _id=''):
 	'''
 	GET /api/v2/wifi/mac_filter/{id}
 	'''
@@ -296,7 +296,43 @@ def get_mac_filter(app, _id=''):
 	return mac_filter
 
 
-def create_mac_filter(app, config):
+def update_macfilter(app, config, _id):
+	'''
+	PUT /api/v2/wifi/mac_filter/{filter_id}
+	
+	dict() config (example):
+	{
+	   "comment": "filtre de test",
+	   "type": "blacklist"
+	}
+	'''
+	update=False
+	
+	if not app.AUTH_SETTINGS:
+		print('[fbx-tools] > Not Allowed [SETTINGS]')
+		return -1
+	
+	r=requests.put(
+		'http://mafreebox.freebox.fr{}wifi/mac_filter/{}'.format(
+			app.api_base_url,
+			_id
+		), 
+		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
+		data=json.dumps(config)
+	)
+	
+	response=r.json()
+	
+	if response['success']:
+		try:
+			update=response['result']
+		except KeyError:
+			update=None
+	
+	return update
+	
+
+def create_macfilter(app, config):
 	'''
 	POST /api/v2/wifi/mac_filter/
 	
@@ -332,7 +368,7 @@ def create_mac_filter(app, config):
 	return create
 	
 
-def delete_mac_filter(app, _id):
+def delete_macfilter(app, _id):
 	'''
 	DELETE /api/v2/wifi/mac_filter/{id}
 	'''
@@ -356,40 +392,4 @@ def delete_mac_filter(app, _id):
 		delete=True
 	
 	return delete
-	
-
-def update_mac_filter(app, config, _id):
-	'''
-	PUT /api/v2/wifi/mac_filter/{filter_id}
-	
-	dict() config (example):
-	{
-	   "comment": "filtre de test",
-	   "type": "blacklist"
-	}
-	'''
-	update=False
-	
-	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
-	
-	r=requests.put(
-		'http://mafreebox.freebox.fr{}wifi/mac_filter/{}'.format(
-			app.api_base_url,
-			_id
-		), 
-		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
-		data=json.dumps(config)
-	)
-	
-	response=r.json()
-	
-	if response['success']:
-		try:
-			update=response['result']
-		except KeyError:
-			update=None
-	
-	return update
 	
