@@ -9,7 +9,7 @@ import time
 import json
 
 
-def get_contacts(app):
+def get_contacts(app, _id=''):
 	'''
 	GET /api/v3/contact/{id}
 	'''
@@ -21,7 +21,8 @@ def get_contacts(app):
 	
 	r=requests.get(
 		'http://mafreebox.freebox.fr{}contact/'.format(
-			app.api_base_url
+			app.api_base_url,
+			_id
 		), 
 		headers={'X-Fbx-App-Auth': app.session_token}
 	)
@@ -35,35 +36,6 @@ def get_contacts(app):
 			contacts=None
 	
 	return contacts
-
-
-def get_one_contact(app, _id):
-	'''
-	GET /api/v3/contact/{id}
-	'''
-	contact=False
-	
-	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
-	
-	r=requests.get(
-		'http://mafreebox.freebox.fr{}contact/{}'.format(
-			app.api_base_url, 
-			_id
-		), 
-		headers={'X-Fbx-App-Auth': app.session_token}
-	)
-	
-	response=r.json()
-	
-	if response['success']:
-		try:
-			contact=response['result']
-		except KeyError:
-			contact=None
-	
-	return contact
 
 
 def create_contact(app, infos):
@@ -288,6 +260,7 @@ def add_address(app, infos):
 			contact=None
 			
 	return contact
+
 
 def delete_information(app, _type, _id):
 	'''

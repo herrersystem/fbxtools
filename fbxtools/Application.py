@@ -21,3 +21,26 @@ class Application:
 	
 	def __str__(self):
 		return self.name
+	
+	def set_permission(self, permission):
+		'''
+		Obtains permissions of app.
+		'''
+		if permission['settings']:
+			self.AUTH_SETTINGS=True
+		if permission['explorer']:
+			self.AUTH_EXPLORER=True
+		if permission['tv']:
+			self.AUTH_TV=True
+		if permission['pvr']:
+			self.AUTH_PVR=True
+		if permission['parental']:
+			self.AUTH_PARENTAL=True
+		if permission['downloader']:
+			self.AUTH_DOWNLOADER=True
+		if permission['contacts']:
+			self.AUTH_CONTACTS=True
+		if permission['calls']:
+			self.AUTH_CALLS=True	
+		
+		return 0

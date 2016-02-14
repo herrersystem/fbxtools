@@ -90,7 +90,7 @@ def connect_app(app_details='app_details.json', app_token='app_token.json'):
 			response=r.json()
 			
 			if response['success']:
-				get_permission(app, response['result']['permissions']) #Get permission.
+				app.set_permission(response['result']['permissions']) #Define permissions.
 				app.session_token=response['result']['session_token']
 				
 				connect=app
@@ -116,30 +116,6 @@ def deconnect_app(app):
 	
 	return deconnect
 
-
-def get_permission(app, permission):
-	'''
-	Obtains permissions of app.
-	'''
-	if permission['settings']:
-		app.AUTH_SETTINGS=True
-	if permission['explorer']:
-		app.AUTH_EXPLORER=True
-	if permission['tv']:
-		app.AUTH_TV=True
-	if permission['pvr']:
-		app.AUTH_PVR=True
-	if permission['parental']:
-		app.AUTH_PARENTAL=True
-	if permission['downloader']:
-		app.AUTH_DOWNLOADER=True
-	if permission['contacts']:
-		app.AUTH_CONTACTS=True
-	if permission['calls']:
-		app.AUTH_CALLS=True	
-	
-	return 0	
-	
 	
 def get_api_config():
 	'''

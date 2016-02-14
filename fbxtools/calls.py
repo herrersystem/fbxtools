@@ -31,7 +31,7 @@ def get_call_log(app, _from=time.time()):
 		try:
 			call_log=response['result']
 		except KeyError:
-			call_log=[]
+			call_log=None
 	
 	return call_log
 
