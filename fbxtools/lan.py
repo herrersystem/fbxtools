@@ -8,7 +8,7 @@ import requests
 import json
 
 
-def get_config_fbx(app):
+def get_config(app):
 	'''
 	GET /api/v3/lan/config/
 	'''
@@ -55,7 +55,7 @@ def get_interfaces(app):
 	return interfaces
 
 
-def get_hosts(app, interface):
+def get_hosts(app, interface, _id=''):
 	'''
 	GET /api/v3/lan/browser/{interface}/
 	
@@ -64,9 +64,10 @@ def get_hosts(app, interface):
 	hosts=False
 	
 	r=requests.get(
-		'http://mafreebox.freebox.fr{}lan/browser/{}/'.format(
+		'http://mafreebox.freebox.fr{}lan/browser/{}/{}'.format(
 			app.api_base_url, 
-			interface
+			interface,
+			_id
 		), 
 		headers={'X-Fbx-App-Auth': app.session_token}
 	)
@@ -82,33 +83,7 @@ def get_hosts(app, interface):
 	return hosts
 
 
-def get_one_host(app, interface, _id):
-	'''
-	GET /api/v3/lan/browser/{interface}/{hostid}/
-	'''
-	host=False
-	
-	r=requests.get(
-		'http://mafreebox.freebox.fr{}lan/browser/{}/{}'.format(
-			app.api_base_url,
-			interface, 
-			_id
-		), 
-		headers={'X-Fbx-App-Auth': app.session_token}
-	)
-	
-	response=r.json()
-	
-	if response['success']:
-		try:
-			host=response['result']
-		except KeyError:
-			host=None
-	
-	return host
-
-
-def set_host(app, interface, config, _id):
+def update_host(app, interface, config, _id):
 	'''
 	PUT /api/v3/lan/browser/{interface}/{hostid}/
 	

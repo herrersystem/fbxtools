@@ -8,7 +8,7 @@ import requests
 import json
 
 
-def get_receivers(app):
+def get_config(app):
 	'''
 	GET /api/v3/airmedia/receivers/
 	
@@ -33,7 +33,7 @@ def get_receivers(app):
 	return receivers
 	
 
-def get_current_receiverConfig(app):
+def get_current_config(app):
 	'''
 	GET /api/v3/airmedia/config/
 	'''
@@ -56,7 +56,7 @@ def get_current_receiverConfig(app):
 	return receiver
 
 
-def update_current_receiverConfig(app, config):
+def update_current_config(app, config):
 	'''
 	PUT /api/v3/airmedia/
 	'''

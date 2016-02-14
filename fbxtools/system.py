@@ -7,7 +7,7 @@ import requests
 import json
 
 
-def get_system_info(app):
+def get_config(app):
 	'''
 	GET /api/v3/system/
 	'''
