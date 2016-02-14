@@ -1,6 +1,6 @@
 # Fbxtools
 
-Interface within Freebox API and Python
+Interface within Freebox OS API and Python
 
 ### Compatibility
 
