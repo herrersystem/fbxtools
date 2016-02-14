@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Freebox API
+Freebox OS API
 for more infos : http://dev.freebox.fr/sdk/os/wifi/
 '''
 import requests
