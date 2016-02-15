@@ -37,7 +37,9 @@ if os.path.isfile('app_token.json'):
 		print(result)
 		
 else:
+	#First execution:
 	#Authorize the application by pressing '>' on the Freebox screen.
 	fbxtools.init_app()
+	#After that, reload manually your app.
 
 ```
