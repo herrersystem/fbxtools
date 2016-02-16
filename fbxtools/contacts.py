@@ -138,10 +138,7 @@ def delete_contact(app, _id):
 	response=r.json()
 	
 	if response['success']:
-		try:
-			contact=True
-		except KeyError:
-			contact=None
+		contact=True
 			
 	return contact
 
@@ -319,10 +316,7 @@ def delete_information(app, _type, _id):
 	response=r.json()
 	
 	if response['success']:
-		try:
-			contact=response['result']
-		except KeyError:
-			contact=None
+		contact=True
 	
 	return contact
 
