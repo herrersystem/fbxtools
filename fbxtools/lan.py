@@ -94,7 +94,7 @@ def get_interfaces(app):
 	return interfaces
 
 
-def get_hosts(app, interface, _id=''):
+def get_host(app, interface, _id=''):
 	'''
 	GET /api/v3/lan/browser/{interface}/
 	
