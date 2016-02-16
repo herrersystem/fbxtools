@@ -7,7 +7,7 @@ import requests
 import time
 
 
-def get_call_log(app, _from=time.time()):
+def get_call_log(app, _datetime=time.time()):
 	'''
 	GET /api/v3/call/log/
 	'''
@@ -21,7 +21,7 @@ def get_call_log(app, _from=time.time()):
 		'http://mafreebox.freebox.fr{}call/log/'.format(
 			app.api_base_url
 		), 
-		params={'_dc': _from},
+		params={'_dc': _datetime},
 		headers={'X-Fbx-App-Auth': app.session_token}
 	)
 	

@@ -38,6 +38,48 @@ def get_contacts(app, _id=''):
 	return contacts
 
 
+def update_contact(app, infos, _id):
+	'''
+	PUT /api/v3/contact/{id}
+	
+	dict() infos (examples):
+	
+	{"company": "Standard Oil"}
+	
+	or
+	
+	{
+		"display_name": "evil",
+		"last_name": "Rockfeller",
+		"company": "Standard Oil"
+	}
+	'''
+	contact=False
+	
+	if not app.AUTH_CONTACTS:
+		print('[fbx-tools] > Not Allowed [CONTACTS]')
+		return -1
+	
+	r=requests.put(
+		'http://mafreebox.freebox.fr{}contact/{}'.format(
+			app.api_base_url,
+			_id
+		), 
+		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
+		data=json.dumps(infos)
+	)
+	
+	response=r.json()
+	
+	if response['success']:
+		try:
+			contact=response['result']
+		except KeyError:
+			contact=None
+			
+	return contact
+
+
 def create_contact(app, infos):
 	'''
 	POST /api/v3/contact/
@@ -104,49 +146,7 @@ def delete_contact(app, _id):
 	return contact
 
 
-def update_contact(app, infos, _id):
-	'''
-	PUT /api/v3/contact/{id}
-	
-	dict() infos (examples):
-	
-	{"company": "Standard Oil"}
-	
-	or
-	
-	{
-		"display_name": "evil",
-		"last_name": "Rockfeller",
-		"company": "Standard Oil"
-	}
-	'''
-	contact=False
-	
-	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
-	
-	r=requests.put(
-		'http://mafreebox.freebox.fr{}contact/{}'.format(
-			app.api_base_url,
-			_id
-		), 
-		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
-		data=json.dumps(infos)
-	)
-	
-	response=r.json()
-	
-	if response['success']:
-		try:
-			contact=response['result']
-		except KeyError:
-			contact=None
-			
-	return contact
-
-
-def add_number(app, infos):
+def create_number(app, infos):
 	'''
 	POST /api/v3/number/
 	
@@ -183,7 +183,7 @@ def add_number(app, infos):
 	return contact
 
 
-def add_email(app, infos):
+def create_email(app, infos):
 	'''
 	POST /api/v3/email/
 	
@@ -220,7 +220,7 @@ def add_email(app, infos):
 	return contact
 
 
-def add_address(app, infos):
+def create_address(app, infos):
 	'''
 	POST /api/v3/address/
 	
@@ -262,6 +262,39 @@ def add_address(app, infos):
 	return contact
 
 
+def update_information(app, _type, _id):
+	'''
+	PUT /api/v3/[number,address,url,email]/{id}
+	
+	str() _type: number or email or address
+	'''
+	contact=False
+	
+	if not app.AUTH_CONTACTS:
+		print('[fbx-tools] > Not Allowed [CONTACTS]')
+		return -1
+	
+	r=requests.put(
+		'http://mafreebox.freebox.fr{}{}/{}'.format(
+			app.api_base_url,
+			_type,
+			_id
+		), 
+		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
+		data=json.dumps(infos)
+	)
+	
+	response=r.json()
+	
+	if response['success']:
+		try:
+			contact=response['result']
+		except KeyError:
+			contact=None
+			
+	return contact	
+
+
 def delete_information(app, _type, _id):
 	'''
 	DELETE /api/v3/[number,address,email]/{id}
@@ -292,6 +325,4 @@ def delete_information(app, _type, _id):
 			contact=None
 	
 	return contact
-	
-	
 
