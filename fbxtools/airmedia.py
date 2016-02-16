@@ -62,6 +62,10 @@ def update_current_config(app, config):
 	'''
 	receiver=False
 	
+	if not app.AUTH_SETTINGS:
+		print('[fbx-tools] > Not Allowed [SETTINGS]')
+		return -1
+	
 	r=requests.get(
 		'http://mafreebox.freebox.fr{}airmedia/config/'.format(
 			app.api_base_url
@@ -91,6 +95,8 @@ def play_media(app, media, receiver='Freebox Server'):
 	   "media": "http://anon.nasa-global.edgesuite.net/HD_downloads/GRAIL_launch_480.mov"
 	}
 	'''	
+	play=False
+	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}airmedia/receivers/{}/'.format(
 			app.api_base_url,
@@ -101,5 +107,7 @@ def play_media(app, media, receiver='Freebox Server'):
 	)
 	
 	response=r.json()
-	
-	return response
+	if response['success']:
+		play=True
+		
+	return play
