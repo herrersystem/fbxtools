@@ -157,4 +157,33 @@ def update_host(app, interface, config, _id):
 		except KeyError:
 			change=None
 	
-	return response
+	return change
+	
+
+def send_wol(app, interface, config):
+	'''
+	POST /api/v3/lan/wol/{interface}/
+	
+	dict() config (example):
+	{
+	   "mac": "00:24:d4:7e:00:4c",
+	   "password": ""
+	}
+	'''	
+	wol=False
+	
+	r=requests.post(
+		'http://mafreebox.freebox.fr{}lan/wol/{}/'.format(
+			app.api_base_url, 
+			interface
+		), 
+		headers={'content-type': 'application/json', 'X-Fbx-App-Auth': app.session_token},
+		data=json.dumps(config)
+	)
+	
+	response=r.json()
+	
+	if response['success']:
+		wol=True
+	
+	return wol
