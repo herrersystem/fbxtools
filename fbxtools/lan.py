@@ -31,6 +31,45 @@ def get_config(app):
 	return config
 	
 
+def update_config(app, config):
+	'''
+	PUT /api/v3/lan/config/
+	
+	dict() config (example):
+	{
+	   "mode":"router",
+	   "ip":"192.168.69.254",
+	   "name":"Freebox de r0ro",
+	   "name_dns":"freebox-de-r0ro",
+	   "name_mdns":"Freebox-de-r0ro",
+	   "name_netbios":"Freebox_de_r0ro"
+	}
+	'''
+	update=False
+	
+	if not app.AUTH_SETTINGS:
+		print('[fbx-tools] > Not Allowed [SETTINGS]')
+		return -1
+		
+	r=requests.put(
+		'http://mafreebox.freebox.fr{}lan/config/'.format(
+			app.api_base_url
+		), 
+		headers={'content-type': 'application/json','X-Fbx-App-Auth': app.session_token},
+		data=json.dumps(config)
+	)
+	
+	response=r.json()
+	
+	if response['success']:
+		try:
+			update=response['result']
+		except KeyError:
+			update=None
+	
+	return update
+
+
 def get_interfaces(app):
 	'''
 	GET /api/v3/lan/browser/interfaces/
