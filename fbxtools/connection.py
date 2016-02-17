@@ -90,7 +90,7 @@ def update_config(app, config):
 	return update
 
 
-def get_config_ipv6(app):
+def get_ipv6_config(app):
 	'''
 	GET /api/v3/connection/ipv6/config/
 	'''
@@ -114,7 +114,7 @@ def get_config_ipv6(app):
 	return config
 
 
-def update_config_ipv6(app, config):
+def update_ipv6_config(app, config):
 	'''
 	PUT /api/v3/connection/ipv6/config/
 	
@@ -153,7 +153,7 @@ def update_config_ipv6(app, config):
 	return update
 
 
-def get_status_ddns(app, provider):
+def get_ddns_status(app, provider):
 	'''
 	GET /api/v3/connection/ddns/{provider}/status/
 	
@@ -180,7 +180,7 @@ def get_status_ddns(app, provider):
 	return status
 
 
-def get_config_ddns(app, provider):
+def get_ddns_config(app, provider):
 	'''
 	GET /api/v3/connection/ddns/{provider}/
 	
@@ -207,7 +207,7 @@ def get_config_ddns(app, provider):
 	return config
 
 
-def update_config_ddns(app, config, provider):
+def update_ddns_config(app, config, provider):
 	'''
 	PUT /api/v3/connection/ddns/{provider}/
 	

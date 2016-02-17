@@ -90,7 +90,7 @@ def reset_config(app):
 	return reset
 
 
-def get_config_ap(app, _id=''):
+def get_ap_config(app, _id=''):
 	'''
 	GET /api/v2/wifi/ap/{id}
 	'''
@@ -115,7 +115,7 @@ def get_config_ap(app, _id=''):
 	return config
 
 
-def update_ap(app, config, _id):
+def update_ap_config(app, config, _id):
 	'''
 	PUT /api/v2/wifi/ap/{id}
 	
