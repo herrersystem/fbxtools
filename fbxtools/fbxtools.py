@@ -12,8 +12,8 @@ def init_app(app_details='app_details.json', app_token='app_token.json'):
 	
 	#Get version and base url of API.
 	result=get_api_config()
-	api_version=float(result['api_version'])
-	api_base_url=result['api_base_url']+str(int(float(result['api_version'])))+'/'
+	api_version=result['api_version']
+	api_base_url=result['api_base_url']+str(int(float(api_version)))+'/'
 	
 	#get app configuration.
 	with open(app_details, 'r') as f:    

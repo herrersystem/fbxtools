@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 class Application:
 	def __init__(self):
 		self.session_token='' #App identification.
@@ -7,8 +8,8 @@ class Application:
 		self.id=''
 		self.version=''
 		
-		self.api_version=float()
-		self.api_base_url='/api/v'
+		self.api_version=''
+		self.api_base_url=''
 
 		self.AUTH_SETTINGS=False
 		self.AUTH_EXPLORER=False
