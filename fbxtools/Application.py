@@ -19,7 +19,9 @@ class Application:
 		self.AUTH_DOWNLOADER=False
 		self.AUTH_CONTACTS=False
 		self.AUTH_CALLS=False
-	
+		
+		self.err_log=list()
+		
 	def __str__(self):
 		return self.name
 	
@@ -45,3 +47,9 @@ class Application:
 			self.AUTH_CALLS=True	
 		
 		return 0
+	
+	def get_last_err(self):
+		if len(self.err_log) > 0:
+			return self.err_log[-1]
+		
+		return []

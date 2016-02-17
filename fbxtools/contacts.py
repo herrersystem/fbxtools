@@ -16,8 +16,8 @@ def get_contacts(app, _id=''):
 	contacts=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.get(
 		'http://mafreebox.freebox.fr{}contact/'.format(
@@ -57,8 +57,8 @@ def update_contact(app, infos, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}contact/{}'.format(
@@ -95,8 +95,8 @@ def create_contact(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}contact/'.format(
@@ -124,8 +124,8 @@ def delete_contact(app, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.delete(
 		'http://mafreebox.freebox.fr{}contact/{}'.format(
@@ -158,8 +158,8 @@ def create_number(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}number/'.format(
@@ -195,8 +195,8 @@ def create_email(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}email/'.format(
@@ -237,8 +237,8 @@ def create_address(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}address/'.format(
@@ -268,8 +268,8 @@ def update_information(app, _type, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}{}/{}'.format(
@@ -301,8 +301,8 @@ def delete_information(app, _type, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		print('[fbx-tools] > Not Allowed [CONTACTS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		return False
 	
 	r=requests.delete(
 		'http://mafreebox.freebox.fr{}{}/{}'.format(

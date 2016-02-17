@@ -37,6 +37,10 @@ def reboot_system(app):
 	'''
 	reboot=False
 	
+	if not app.AUTH_SETTINGS:
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
+	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}system/reboot/'.format(
 			app.api_base_url

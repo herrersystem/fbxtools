@@ -43,8 +43,8 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}wifi/config/'.format(
@@ -72,8 +72,8 @@ def reset_config(app):
 	reset=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.delete(
 		'http://mafreebox.freebox.fr{}wifi/config/reset/'.format(
@@ -134,8 +134,8 @@ def update_ap_config(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}wifi/ap/{}'.format(
@@ -196,8 +196,8 @@ def update_ap_bss(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}wifi/bss/{}'.format(
@@ -309,8 +309,8 @@ def update_macfilter(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}wifi/mac_filter/{}'.format(
@@ -346,8 +346,8 @@ def create_macfilter(app, config):
 	create=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.post(
 		'http://mafreebox.freebox.fr{}wifi/mac_filter/'.format(
@@ -375,8 +375,8 @@ def delete_macfilter(app, _id):
 	delete=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.delete(
 		'http://mafreebox.freebox.fr{}wifi/mac_filter/{}'.format(

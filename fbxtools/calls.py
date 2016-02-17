@@ -14,8 +14,8 @@ def get_call_log(app, _datetime=time.time()):
 	call_log=False
 	
 	if not app.AUTH_CALLS:
-		print('[fbx-tools] > Not Allowed [CALLS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]')
+		return False
 	
 	r=requests.get(
 		'http://mafreebox.freebox.fr{}call/log/'.format(
@@ -43,8 +43,8 @@ def delete_call(app, _id):
 	deletion=False
 	
 	if not app.AUTH_CALLS:
-		print('[fbx-tools] > Not Allowed [CALLS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]')
+		return False
 	
 	r=requests.delete(
 		'http://mafreebox.freebox.fr{}call/log/{}'.format(

@@ -6,6 +6,7 @@ for more infos : http://dev.freebox.fr/sdk/os/lcd/
 import requests
 import json
 
+
 def get_config(app):
 	'''
 	GET /api/v3/lcd/config/
@@ -44,8 +45,8 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 		
 	r=requests.put(
 		'http://mafreebox.freebox.fr{}lcd/config/'.format(

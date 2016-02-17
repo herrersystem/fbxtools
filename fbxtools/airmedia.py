@@ -63,8 +63,8 @@ def update_current_config(app, config):
 	receiver=False
 	
 	if not app.AUTH_SETTINGS:
-		print('[fbx-tools] > Not Allowed [SETTINGS]')
-		return -1
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		return False
 	
 	r=requests.get(
 		'http://mafreebox.freebox.fr{}airmedia/config/'.format(
