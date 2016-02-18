@@ -2,6 +2,13 @@
 
 Interface within Freebox OS API and Python
 
+### Installation
+
+```
+pip install fbxtools
+```
+
+
 ### Compatibility
 
 * Freebox OS API v2, v3
