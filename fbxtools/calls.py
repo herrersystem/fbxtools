@@ -14,11 +14,11 @@ def get_call_log(app, _datetime=time.time()):
 	call_log=False
 	
 	if not app.AUTH_CALLS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]'))
 		return False
 	
 	r=requests.get(
-		'http://mafreebox.freebox.fr{}call/log/'.format(
+		'http://mafreebox.freebox.fr{}call/log/johndoe/'.format(
 			app.api_base_url
 		), 
 		params={'_dc': _datetime},
