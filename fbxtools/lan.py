@@ -27,7 +27,9 @@ def get_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 	
 
@@ -48,7 +50,7 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 		
 	r=requests.put(
@@ -66,7 +68,9 @@ def update_config(app, config):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -90,7 +94,9 @@ def get_interfaces(app):
 			interfaces=response['result']
 		except KeyError:
 			interfaces=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return interfaces
 
 
@@ -118,7 +124,9 @@ def get_host(app, interface, _id=''):
 			hosts=response['result']
 		except KeyError:
 			hosts=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return hosts
 
 
@@ -136,7 +144,7 @@ def update_host(app, interface, config, _id):
 	change=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.put(
@@ -156,7 +164,9 @@ def update_host(app, interface, config, _id):
 			change=response['result']
 		except KeyError:
 			change=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return change
 	
 
@@ -185,5 +195,7 @@ def send_wol(app, interface, config):
 	
 	if response['success']:
 		wol=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return wol

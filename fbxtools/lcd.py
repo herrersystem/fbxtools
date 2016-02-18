@@ -27,7 +27,9 @@ def get_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 
 
@@ -45,7 +47,7 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 		
 	r=requests.put(
@@ -63,6 +65,8 @@ def update_config(app, config):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 	

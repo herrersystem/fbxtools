@@ -16,7 +16,7 @@ def get_contacts(app, _id=''):
 	contacts=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.get(
@@ -34,7 +34,9 @@ def get_contacts(app, _id=''):
 			contacts=response['result']
 		except KeyError:
 			contacts=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return contacts
 
 
@@ -57,7 +59,7 @@ def update_contact(app, infos, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.put(
@@ -76,7 +78,9 @@ def update_contact(app, infos, _id):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact
 
 
@@ -95,7 +99,7 @@ def create_contact(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.post(
@@ -113,7 +117,9 @@ def create_contact(app, infos):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact
 
 
@@ -124,7 +130,7 @@ def delete_contact(app, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.delete(
@@ -139,7 +145,9 @@ def delete_contact(app, _id):
 	
 	if response['success']:
 		contact=True
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact
 
 
@@ -158,7 +166,7 @@ def create_number(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.post(
@@ -176,7 +184,9 @@ def create_number(app, infos):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact
 
 
@@ -195,7 +205,7 @@ def create_email(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.post(
@@ -213,7 +223,9 @@ def create_email(app, infos):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+				
 	return contact
 
 
@@ -237,7 +249,7 @@ def create_address(app, infos):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.post(
@@ -255,7 +267,9 @@ def create_address(app, infos):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact
 
 
@@ -268,7 +282,7 @@ def update_information(app, _type, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.put(
@@ -288,7 +302,9 @@ def update_information(app, _type, _id):
 			contact=response['result']
 		except KeyError:
 			contact=None
-			
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+					
 	return contact	
 
 
@@ -301,7 +317,7 @@ def delete_information(app, _type, _id):
 	contact=False
 	
 	if not app.AUTH_CONTACTS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CONTACTS]'))
 		return False
 	
 	r=requests.delete(
@@ -317,6 +333,8 @@ def delete_information(app, _type, _id):
 	
 	if response['success']:
 		contact=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return contact
 

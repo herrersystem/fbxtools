@@ -29,7 +29,9 @@ def get_config(app):
 			receivers=response['result']
 		except KeyError:
 			receivers=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+		
 	return receivers
 	
 
@@ -52,7 +54,9 @@ def get_current_config(app):
 			receiver=response['result']
 		except KeyError:
 			receiver=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+		
 	return receiver
 
 
@@ -63,7 +67,7 @@ def update_current_config(app, config):
 	receiver=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.get(
@@ -80,7 +84,9 @@ def update_current_config(app, config):
 			receiver=response['result']
 		except KeyError:
 			receiver=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+		
 	return receiver
 	
 
@@ -107,7 +113,10 @@ def play_media(app, media, receiver='Freebox Server'):
 	)
 	
 	response=r.json()
+	
 	if response['success']:
 		play=True
-		
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return play

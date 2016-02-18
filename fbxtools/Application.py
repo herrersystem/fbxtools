@@ -52,4 +52,4 @@ class Application:
 		if len(self.err_log) > 0:
 			return self.err_log[-1]
 		
-		return []
+		return False

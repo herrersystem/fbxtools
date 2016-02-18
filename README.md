@@ -31,11 +31,12 @@ if os.path.isfile('app_token.json'):
 		
 	if app != False:
 		result=calls.get_call_log(app)
-		fbxtools.deconnect_app(app)
-		
-		#Print call log.
 		print(result)
 		
+		if result == False:
+			print(app.get_last_err())
+		
+		fbxtools.deconnect_app(app)
 else:
 	#First execution:
 	#Authorize the application by pressing '>' on the Freebox screen.

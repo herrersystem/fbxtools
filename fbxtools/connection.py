@@ -27,7 +27,9 @@ def get_status(app):
 			status=response['result']
 		except KeyError:
 			status=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return status
 
 
@@ -51,7 +53,9 @@ def get_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 
 
@@ -68,7 +72,7 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 		
 	r=requests.put(
@@ -86,7 +90,9 @@ def update_config(app, config):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -110,7 +116,9 @@ def get_ipv6_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 
 
@@ -131,7 +139,7 @@ def update_ipv6_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 		
 	r=requests.put(
@@ -149,7 +157,9 @@ def update_ipv6_config(app, config):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -176,7 +186,9 @@ def get_ddns_status(app, provider):
 			status=response['result']
 		except KeyError:
 			status=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return status
 
 
@@ -203,7 +215,9 @@ def get_ddns_config(app, provider):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 
 
@@ -222,7 +236,7 @@ def update_ddns_config(app, config, provider):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 		
 	r=requests.put(
@@ -241,7 +255,9 @@ def update_ddns_config(app, config, provider):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -266,7 +282,9 @@ def get_xdsl_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 	
 
@@ -290,5 +308,7 @@ def get_ftth_status(app):
 			status=response['result']
 		except KeyError:
 			status=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return status	

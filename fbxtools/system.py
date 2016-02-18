@@ -27,7 +27,9 @@ def get_config(app):
 			infos=response['result']
 		except KeyError:
 			infos=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return infos
 
 
@@ -38,7 +40,7 @@ def reboot_system(app):
 	reboot=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.post(
@@ -52,6 +54,8 @@ def reboot_system(app):
 	
 	if response['success']:
 		reboot=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return reboot
 	

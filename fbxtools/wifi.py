@@ -27,7 +27,9 @@ def get_config(app):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 	
 
@@ -43,7 +45,7 @@ def update_config(app, config):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.put(
@@ -61,7 +63,9 @@ def update_config(app, config):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -72,7 +76,7 @@ def reset_config(app):
 	reset=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.delete(
@@ -86,7 +90,9 @@ def reset_config(app):
 	
 	if response['success']:
 		reset=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return reset
 
 
@@ -111,7 +117,9 @@ def get_ap_config(app, _id=''):
 			config=response['result']
 		except KeyError:
 			config=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return config
 
 
@@ -134,7 +142,7 @@ def update_ap_config(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.put(
@@ -153,7 +161,9 @@ def update_ap_config(app, config, _id):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 
 
@@ -178,7 +188,9 @@ def get_ap_bss(app, _id=''):
 			bss=response['result']
 		except KeyError:
 			bss=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return station
 
 
@@ -196,7 +208,7 @@ def update_ap_bss(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.put(
@@ -215,7 +227,9 @@ def update_ap_bss(app, config, _id):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 	
 
@@ -242,7 +256,9 @@ def get_station_connected(app, _id):
 			station=response['result']
 		except KeyError:
 			station=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return station
 
 
@@ -267,7 +283,9 @@ def get_ap_neighbors(app, _id):
 			neighbors=response['result']
 		except KeyError:
 			neighbors=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return neighbors
 
 
@@ -292,7 +310,9 @@ def get_config_macfilter(app, _id=''):
 			mac_filter=response['result']
 		except KeyError:
 			mac_filter=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return mac_filter
 
 
@@ -309,7 +329,7 @@ def update_macfilter(app, config, _id):
 	update=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.put(
@@ -328,7 +348,9 @@ def update_macfilter(app, config, _id):
 			update=response['result']
 		except KeyError:
 			update=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return update
 	
 
@@ -346,7 +368,7 @@ def create_macfilter(app, config):
 	create=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.post(
@@ -364,7 +386,9 @@ def create_macfilter(app, config):
 			create=response['result']
 		except KeyError:
 			create=None
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return create
 	
 
@@ -375,7 +399,7 @@ def delete_macfilter(app, _id):
 	delete=False
 	
 	if not app.AUTH_SETTINGS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [SETTINGS]'))
 		return False
 	
 	r=requests.delete(
@@ -390,6 +414,8 @@ def delete_macfilter(app, _id):
 	
 	if response['success']:
 		delete=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return delete
 	

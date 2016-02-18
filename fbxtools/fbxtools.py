@@ -71,6 +71,11 @@ def connect_app(app_details='app_details.json', app_token='app_token.json'):
 			)
 			
 			response=r.json()
+			
+			if not response['success']:
+				app.err_log.append((response['error_code'], response['msg']))
+				return False
+			
 			challenge=response['result']['challenge']
 			
 			#Create password and login dict.
@@ -95,8 +100,8 @@ def connect_app(app_details='app_details.json', app_token='app_token.json'):
 				
 				connect=app
 			else:
-				print('[{}] {}'.format(response['error_code'], response['msg']))
-		
+				app.err_log.append((response['error_code'], response['msg']))
+			
 	return connect
 
 
@@ -113,7 +118,9 @@ def deconnect_app(app):
 	
 	if response['success']:
 		deconnect=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+			
 	return deconnect
 
 	

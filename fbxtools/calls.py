@@ -18,7 +18,7 @@ def get_call_log(app, _datetime=time.time()):
 		return False
 	
 	r=requests.get(
-		'http://mafreebox.freebox.fr{}call/log/johndoe/'.format(
+		'http://mafreebox.freebox.fr{}call/log/'.format(
 			app.api_base_url
 		), 
 		params={'_dc': _datetime},
@@ -31,8 +31,10 @@ def get_call_log(app, _datetime=time.time()):
 		try:
 			call_log=response['result']
 		except KeyError:
-			call_log=None
-	
+			call_log=response
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+		
 	return call_log
 
 
@@ -43,7 +45,7 @@ def delete_call(app, _id):
 	deletion=False
 	
 	if not app.AUTH_CALLS:
-		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]')
+		app.err_log.append(('err_auth', 'not allowed : AUTH [CALLS]'))
 		return False
 	
 	r=requests.delete(
@@ -58,5 +60,7 @@ def delete_call(app, _id):
 	
 	if response['success']:
 		deletion=True
-	
+	else:
+		app.err_log.append((response['error_code'], response['msg']))
+		
 	return deletion
