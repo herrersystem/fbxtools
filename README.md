@@ -14,6 +14,10 @@ pip install fbxtools
 * Freebox OS API v2, v3
 * Python 3.x
 
+### Documentation
+
+https://pythonhosted.org/fbxtools/index.html
+
 ### Example
 
 Create file __app_details.json__:
