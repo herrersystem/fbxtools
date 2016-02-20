@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='fbxtools',
-	version='0.2',
+	version='0.3',
 	author='herrersystem',
 	author_email='herrersystem@mailoo.org',
 	
