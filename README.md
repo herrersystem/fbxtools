@@ -1,57 +1,115 @@
 # Fbxtools
 
-Interface within Freebox OS API and Python
+Provide intialisation, connect and disconnect functions for Freebox OS application.
 
-### Installation
+## Installation
 
-```
+```bash
 pip install fbxtools
 ```
 
+## Get started
 
-### Compatibility
+### Fbx class
 
-* Freebox OS API v2, v3
-* Python 3.x
-
-### Documentation
-
-https://pythonhosted.org/fbxtools/index.html
-
-### Example
-
-Create file __app_details.json__:
 ```
+from fbxtools.fbx import Fbx
+```
+
+Accept 3 arguments:
+* url (__str__) : Freebox OS API url's
+* app_infos (__str__) : filepath of app_infos file (default: 'app_infos.json') 
+* app_auth (__str__) : filepath of app_auth file (default: 'app_auth.json')
+* verify_cert (__bool__ or __str__) : disable SSL cert verification or get certfile path. (default True)
+* mute (__bool__) : disable fbxtools message (default: False)
+
+### app_infos.json file
+
+This file provide application informations. Must be created manually.
+
+See http://dev.freebox.fr/sdk/os/login/#tokenrequest-object 
+
+example :
+```json
 {
-"app_id": "fr.freebox.testapp",
-"app_name":"testapp",
-"app_version":"0.0.1",
-"device_name":"my_pc"
+	"app_id": "fr.freebox.test",
+	"app_name": "test",
+	"app_version": "0.0.1",
+	"device_name": "mycomputer"
 }
 ```
 
-example for get call log:
+### app_auth.json file:
 
+This file provide connect informations. Automatically generated with Fbx.get_app_token().
+
+See http://dev.freebox.fr/sdk/os/login/#tokenrequest-object
+
+example : 
+```json
+{
+	"track_id": 6, 
+	"app_token": "vfItuATAq8luiuDmo3ZeVVhb0Cv9uImxN2/VJRLa1rOjUsjkBxbEgPY9VwiwpSxq"
+}
 ```
-import os
-import fbxtools.fbxtools as fbxtools
-import fbxtools.calls as calls
 
-if os.path.isfile('app_token.json'):
-	app=fbxtools.connect_app()
-		
-	if app != False:
-		result=calls.get_call_log(app)
-		print(result)
-		
-		if result == False:
-			print(app.get_last_err())
-		
-		fbxtools.deconnect_app(app)
-else:
-	#First execution:
-	#Authorize the application by pressing '>' on the Freebox screen.
-	fbxtools.init_app()
-	#After that, reload manually your app.
+### First use (Init app)
 
+```python
+from fbxtools.fbx import Fbx
+
+app = Fbx('http://mafreebox.freebox.fr')
+app.get_app_token()
 ```
+
+This function generated automatically 'app_auth.json' file.
+For Fbx.url argument, you can use:
+* generic url http://mafreebox.freebox.fr
+* get personnal url with fbxtools.utils.get_url_api().
+
+example :
+```python
+from fbxtools.utils import get_url_api
+from fbxtools.fbx import Fbx
+
+url_api = get_url_api()
+app = Fbx(url_api)
+app.get_app_token()
+```
+Work only on the __same network__ as your freebox (local network).
+
+### Call API.
+```python
+from fbxtools.fbx import Fbx
+
+app = Fbx('http://mafreebox.freebox.fr')
+app.get_session_token()
+
+
+@app.api.call('/lcd/config')
+def get_config():
+	'''
+	http://dev.freebox.fr/sdk/os/lcd/#get-the-current-lcd-configuration
+	''' 
+	return {}
+
+
+@app.api.call('/lcd/config', method='PUT')
+def update_config(config):
+	'''
+	http://dev.freebox.fr/sdk/os/lcd/#update-the-lcd-configuration
+	'''
+	return {'data': config, 'is_json': True}
+
+
+if __name__ == "__main__":
+	new_config = {	
+		"brightness": 50,
+		"orientation": 90,
+		"orientation_forced": False
+	}
+
+	resp = get_config()
+	print(resp)
+```
+
