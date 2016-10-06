@@ -5,8 +5,8 @@ from __future__ import print_function
 
 import hmac
 from apize.apize import Apize
-from .exceptions import *
-from .utils import *
+from fbxtools.exceptions import *
+from fbxtools.utils import *
 
 
 class Fbx():
