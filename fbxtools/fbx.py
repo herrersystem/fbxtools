@@ -91,7 +91,13 @@ class Fbx():
 
 		return session_token
 
-
+	def get_status(self, track_id):
+		@self.api.call('/api/v3/login/authorize/:id')
+		def wrapper(track_id):
+			args = {'id': track_id}
+			return {'args': args}
+		return wrapper(track_id)        
+	
 	def get_app_token(self):
 		"""
 		Allow and register your app to the Freebox Server.
