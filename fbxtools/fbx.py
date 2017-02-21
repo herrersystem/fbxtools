@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import hmac
+from hashlib import sha1
 from apize.apize import Apize
 from fbxtools.exceptions import *
 from fbxtools.utils import *
@@ -33,7 +34,7 @@ class Fbx():
 	def connect_app(self, app_token, app_id, challenge):
 		@self.api.call('/login/session/', method='POST')
 		def wrapper(app_token, app_id, challenge):
-			h = hmac.new(app_token.encode(), challenge, 'sha1')
+			h = hmac.new(app_token.encode(), challenge, sha1)
 			password = h.hexdigest()
 
 			data = {'app_id': app_id, 'password': password}
@@ -106,6 +107,19 @@ class Fbx():
 				if not self.mute:
 					print('%s file was generated.' % self.app_auth)
 					print('Press ">" button on the dial of the Freebox')
+					
+				# Track authorization progress
+				status = "pending"
+				count = 0
+				while (status!="granted") and (count<20):
+					count += 1
+					response1 = self.get_status(track_id)['data']
+					if not self.mute:
+						print (response1)
+					if response['success']:
+						status = response1['result']['status']
+					time.sleep(2)
+					
 		else:
 			raise FbxAppToken(
 				response['data']['error_code'],
