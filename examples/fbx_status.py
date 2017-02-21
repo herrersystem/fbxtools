@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
+from fbxtools.fbx import Fbx
+
 ## Initialize and connect app.
 app = Fbx('http://192.168.0.254')
 app.get_session_token()
