@@ -110,6 +110,7 @@ class Fbx():
 		if response['success']:
 			with open(self.app_auth, 'w') as f:
 				content = json.dumps(response['result'])
+				track_id = response['result']['track_id']
 				f.write(content)
 				
 				if not self.mute:
