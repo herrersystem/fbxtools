@@ -9,6 +9,8 @@ from apize.apize import Apize
 from fbxtools.exceptions import *
 from fbxtools.utils import *
 
+import time
+
 
 class Fbx():
 
