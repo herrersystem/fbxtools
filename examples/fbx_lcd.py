@@ -7,7 +7,7 @@ app = Fbx()
 app.get_session_token()
 
 
-@app.api.call('/lcd/config')
+@app.api.call('/api/v3/lcd/config')
 def get_config():
 	'''
 	GET /api/v3/lcd/config/
@@ -15,7 +15,7 @@ def get_config():
 	return {}
 
 
-@app.api.call('/lcd/config', method='PUT')
+@app.api.call('/api/v3/lcd/config', method='PUT')
 def update_config(config):
 	'''
 	PUT /api/v3/lcd/config/
