@@ -58,14 +58,14 @@ example :
 ```python
 from fbxtools.fbx import Fbx
 
-app = Fbx('http://mafreebox.freebox.fr')
+app = Fbx('http://mafreebox.freebox.fr/api/v3')
 app.get_app_token()
 ```
 
 This function generated automatically 'app_auth.json' file.
 For Fbx.url argument, you can use:
 * generic url http://mafreebox.freebox.fr
-* get personnal url with fbxtools.utils.get_url_api().
+* get reel url with fbxtools.utils.get_url_api().
 
 example :
 ```python
@@ -76,13 +76,13 @@ url_api = get_url_api()
 app = Fbx(url_api)
 app.get_app_token()
 ```
-Work only on the __same network__ as your freebox (local network).
+Use this if you are on the __same network__ as your freebox.
 
 ### Call API.
 ```python
 from fbxtools.fbx import Fbx
 
-app = Fbx('http://mafreebox.freebox.fr')
+app = Fbx('http://mafreebox.freebox.fr/api/v3')
 app.get_session_token()
 
 

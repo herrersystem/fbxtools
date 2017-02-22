@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-
+from fbxtools.utils import get_url_api
 from fbxtools.fbx import Fbx
 
-## Initialize and connect app.
-app = Fbx()
+url_api = get_url_api()
+app = Fbx(url_api)
 app.get_session_token()
 
 
