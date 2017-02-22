@@ -26,7 +26,7 @@ class Fbx():
 
 
 	def init_app(self, infos):
-		@self.api.call('/api/v3/login/authorize/', method='POST')
+		@self.api.call('/login/authorize/', method='POST')
 		def wrapper(infos):
 			return {'data': infos, 'is_json': True}
 
@@ -34,7 +34,7 @@ class Fbx():
 
 
 	def connect_app(self, app_token, app_id, challenge):
-		@self.api.call('/api/v3/login/session/', method='POST')
+		@self.api.call('/login/session/', method='POST')
 		def wrapper(app_token, app_id, challenge):
 			h = hmac.new(app_token.encode(), challenge, sha1)
 			password = h.hexdigest()
@@ -52,7 +52,7 @@ class Fbx():
 
 
 	def get_challenge(self, track_id):
-		@self.api.call('/api/v3/login/authorize/:id')
+		@self.api.call('/login/authorize/:id')
 		def wrapper(track_id):
 			args = {'id': track_id}
 
@@ -94,7 +94,7 @@ class Fbx():
 		return session_token
 
 	def get_status(self, track_id):
-		@self.api.call('/api/v3/login/authorize/:id')
+		@self.api.call('/login/authorize/:id')
 		def wrapper(track_id):
 			args = {'id': track_id}
 			return {'args': args}
