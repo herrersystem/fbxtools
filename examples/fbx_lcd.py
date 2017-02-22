@@ -3,7 +3,7 @@
 from fbxtools.fbx import Fbx
 
 ## Initialize and connect app.
-app = Fbx('http://mafreebox.free.fr/api/v3')
+app = Fbx('http://mafreebox.freebox.fr/api/v3')
 app.get_session_token()
 
 
