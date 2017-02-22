@@ -4,13 +4,13 @@
 from fbxtools.fbx import Fbx
 
 ## Initialize and connect app.
-app = Fbx('http://192.168.0.254')
+app = Fbx('http://192.168.0.254/api/v3')
 app.get_session_token()
 
 
 from fbxtools.fbx import Fbx
 
-@app.api.call('/api/v3/system/')
+@app.api.call('/system/')
 def get_system():
 	'''
 	GET /api/v3/system/
