@@ -3,11 +3,11 @@
 from fbxtools.fbx import Fbx
 
 ## Initialize and connect app.
-app = Fbx()
+app = Fbx('http://mafreebox.free.fr/api/v3')
 app.get_session_token()
 
 
-@app.api.call('/api/v3/lcd/config')
+@app.api.call('/lcd/config')
 def get_config():
 	'''
 	GET /api/v3/lcd/config/
@@ -15,7 +15,7 @@ def get_config():
 	return {}
 
 
-@app.api.call('/api/v3/lcd/config', method='PUT')
+@app.api.call('/lcd/config', method='PUT')
 def update_config(config):
 	'''
 	PUT /api/v3/lcd/config/
