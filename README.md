@@ -58,7 +58,7 @@ example :
 ```python
 from fbxtools.fbx import Fbx
 
-app = Fbx('http://mafreebox.freebox.fr')
+app = Fbx('http://mafreebox.freebox.fr/api/v3')
 app.get_app_token()
 ```
 
@@ -82,7 +82,7 @@ Work only on the __same network__ as your freebox (local network).
 ```python
 from fbxtools.fbx import Fbx
 
-app = Fbx('http://mafreebox.freebox.fr')
+app = Fbx('http://mafreebox.freebox.fr/api/v3')
 app.get_session_token()
 
 
