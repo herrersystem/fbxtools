@@ -24,6 +24,15 @@ class Fbx():
 		self.app_infos = app_infos
 		self.mute = mute
 
+		self._permissions = Permissions()
+		self._permissions.pvr		= False
+		self._permissions.explorer   = False
+		self._permissions.calls	  = False
+		self._permissions.contacts   = False
+		self._permissions.tv		 = False
+		self._permissions.parental   = False
+		self._permissions.settings   = False
+		self._permissions.downloader = False
 
 	def init_app(self, infos):
 		@self.api.call('/login/authorize/', method='POST')
@@ -89,6 +98,24 @@ class Fbx():
 			)
 
 		session_token = conn['data']['result']['session_token']
+		permissions = conn['data']['result']['permissions']
+		for permission in permissions.iterkeys():
+			if permission == 'pvr':
+				self._permissions.pvr = permissions[permission]
+			elif permission == 'explorer':
+				self._permissions.explorer = permissions[permission]
+			elif permission == 'calls':
+				self._permissions.calls = permissions[permission]
+			elif permission == 'contacts':
+				self._permissions.contacts = permissions[permission]
+			elif permission == 'tv':
+				self._permissions.tv = permissions[permission]
+			elif permission == 'parental':
+				self._permissions.parental = permissions[permission]
+			elif permission == 'settings':
+				self._permissions.settings = permissions[permission]
+			elif permission == 'downloader':
+				self._permissions.downloader = permissions[permission]
 		self.api.headers['X-Fbx-App-Auth'] = session_token 
 
 		return session_token
@@ -142,3 +169,25 @@ class Fbx():
 			response['result']['track_id']
 		)
 
+	def get_permissions(self):
+		return self._permissions
+
+	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
+	
+class Permissions(object):
+	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
+	
+	def items(self):
+		"dict style items"
+		return [
+			(field_name, getattr(self, field_name))
+			for field_name in self.__slots__]
+
+	def __iter__(self):
+		"iterate over fields tuple/list style"
+		for field_name in self.__slots__:
+			yield getattr(self, field_name)
+
+	def __getitem__(self, index):
+		"tuple/list style getitem"
+		return getattr(self, self.__slots__[index])	
