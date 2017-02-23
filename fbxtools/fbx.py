@@ -134,7 +134,8 @@ class Fbx():
 		infos = parse_infos_file(self.app_infos)
 		response = self.init_app(infos)['data']
 		
-		print (response)
+		if not self.mute:
+			print (response)
 
 		if response['success']:
 			with open(self.app_auth, 'w') as f:
