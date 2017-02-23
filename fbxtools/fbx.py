@@ -99,7 +99,7 @@ class Fbx():
 
 		session_token = conn['data']['result']['session_token']
 		permissions = conn['data']['result']['permissions']
-		for permission in permissions.iterkeys():
+		for permission in permissions:
 			if permission == 'pvr':
 				self._permissions.pvr = permissions[permission]
 			elif permission == 'explorer':
