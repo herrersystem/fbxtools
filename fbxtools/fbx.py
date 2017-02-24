@@ -492,7 +492,6 @@ class Fbx():
 		if not self.permissions.contacts :
 			return result
 		data = self._get_groups()['data']
-		print(data)
 		try:
 			if not data['success']:
 				return result
@@ -500,7 +499,6 @@ class Fbx():
 			return result
 		groups = data['result']
 		self._groups = {}
-		print(groups)
 		for group in groups:
 			groupinfos = self._build_groupinfos(group)
 			self._groups[group['id']] = groupinfos
