@@ -559,7 +559,8 @@ class FreeboxObj(object):
 	def __str__(self):
 		result = []
 		for field_name in self.__slots__:
-			result.append("%s: %s" % (field_name, getattr(self,field_name)))
+			if field_name != "__dict__":
+				result.append("%s: %s" % (field_name, getattr(self,field_name)))
 		return u", ".join(result)
 	
 class Permissions(object):
