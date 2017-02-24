@@ -10,7 +10,7 @@ from fbxtools.exceptions import *
 from fbxtools.utils import *
 
 import time
-
+from datetime import timedelta, datetime
 
 class Fbx():
 
@@ -33,6 +33,22 @@ class Fbx():
 		self._permissions.parental   = False
 		self._permissions.settings   = False
 		self._permissions.downloader = False
+		
+		self._calls = {}
+
+		self._boxinfos_loaded = False
+		self._uptime = timedelta(days=0) 
+		self._disk_status = "" 
+		self._fan_rpm = 0
+		self._temp_cpub = 0
+		self._uptime_val = 0 
+		self._board_name = "" 
+		self._mac = "" 
+		self._temp_cpum = 0
+		self._temp_sw = 0
+		self._box_authenticated = False
+		self._serial = ""
+		self._firmware_version = ""
 
 	def init_app(self, infos):
 		@self.api.call('/login/authorize/', method='POST')
@@ -169,11 +185,284 @@ class Fbx():
 			response['result']['app_token'],
 			response['result']['track_id']
 		)
+	
+	def get_system(self):
+		@self.api.call('/system/')
+		def wrapper():
+			return {}
+
+		return wrapper()
+	
+	def get_system_infos(self):
+		data = self.get_system()['data']
+		if data['success']:
+			self._uptime      = data['result']['uptime']
+			self._disk_status = data['result']['disk_status'] 
+			self._fan_rpm	  = data['result']['fan_rpm']
+			self._temp_cpub   = data['result']['temp_cpub']
+			self._uptime_val  = timedelta(seconds=data['result']['uptime_val'])
+			self._board_name  = data['result']['board_name']
+			self._mac	  = data['result']['mac'] 
+			self._temp_cpum   = data['result']['temp_cpum']
+			self._temp_sw	  = data['result']['temp_sw']
+			self._box_authenticated = data['result']['box_authenticated']
+			self._serial      = data['result']['serial']
+			self._firmware_version  = data['result']['firmware_version']
+			self._boxinfos_loaded = True
+		return data
+	
+	def get_uptime(self):
+		if self._boxinfos_loaded:
+			return self._uptime
+
+		data = self.get_system_infos()
+		if data['success']:
+			return self._uptime
+		else:
+			return ""
+		
+	def get_fan_rpm(self):
+		if self._boxinfos_loaded:
+			return self._fan_rpm
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._fan_rpm
+			else:
+				return 0
+		
+	def get_disk_status(self):
+		if self._boxinfos_loaded:
+			return self._disk_status
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._disk_status
+			else:
+				return 0
+		
+	def get_temp_cpub(self):
+		if self._boxinfos_loaded:
+			return self._temp_cpub
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._temp_cpub
+			else:
+				return 0
+		
+	def get_uptime_val(self):
+		if self._boxinfos_loaded:
+			return self._uptime_val
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._uptime_val
+			else:
+				return 0
+		
+	def get_board_name(self):
+		if self._boxinfos_loaded:
+			return self._board_name
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._board_name
+			else:
+				return ""
+		
+	def get_mac(self):
+		if self._boxinfos_loaded:
+			return self._mac
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._mac
+			else:
+				return ""
+		
+	def get_temp_cpum(self):
+		if self._boxinfos_loaded:
+			return self._temp_cpum
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._temp_cpum
+			else:
+				return 0
+		
+	def get_temp_sw(self):
+		if self._boxinfos_loaded:
+			return self._temp_sw
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._temp_sw
+			else:
+				return 0
+		
+	def get_box_authenticated(self):
+		if self._boxinfos_loaded:
+			return self._box_authenticated
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._box_authenticated
+			else:
+				return False
+		
+	def get_serial(self):
+		if self._boxinfos_loaded:
+			return self._serial
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._serial
+			else:
+				return ""
+		
+	def get_firmware_version(self):
+		if self._boxinfos_loaded:
+			return self._firmware_version
+		else:
+			uptime = self.uptime
+			if self._uptime != timedelta(days=0):
+				return self._firmware_version
+			else:
+				return ""
+	def __str__(self):
+		fbstr = u"uptime: %s, disk_status: %s, firmware_version: %s, box_authenticated: %s\r\n"\
+		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
+		fbstr += u"fan_rpm: %s RPM, temp_cpub: %s °C, temp_cpum: %s °C, temp_sw: %s °C\r\n"\
+		% (self.fan_rpm,self.temp_cpub,self.temp_cpum,self.temp_sw)
+		fbstr += u"board_name: %s, mac: %s, serial: %s"\
+		% (self.board_name,self.mac,self.serial)
+		return unicode(fbstr)			
+
+			
+	def get_permissions(self):
+		return self._permissions
+	
+	def _get_calls(self):
+		@self.api.call('/call/log/')
+		def wrapper():
+			return {}
+
+		return wrapper()
+
+	def _get_call(self,call_id):
+		@self.api.call('/call/log/:id')
+		def wrapper():
+			args = {'id': call_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _build_callinfos(self,call):
+		callinfos = Call()
+		for index in call:
+			if index == "datetime":
+				setattr(callinfos,index,datetime.fromtimestamp(call[index]))
+			elif index == "duration":
+				setattr(callinfos,index,timedelta(seconds=call[index]))
+			elif index == "type":
+				setattr(callinfos,index,call[index])
+				if call[index] == 'missed':
+					setattr(callinfos,'missed',True)
+				else:
+					setattr(callinfos,'missed',False)
+				if call[index] == 'accepted':
+					setattr(callinfos,'accepted',True)
+				else:
+					setattr(callinfos,'accepted',False)
+				if call[index] == 'outgoing':
+					setattr(callinfos,'outgoing',True)
+				else:
+					setattr(callinfos,'outgoing',False)
+			else:
+				setattr(callinfos,index,call[index])
+		return callinfos
+	
+	
+	def get_calls(self,call_id=None):
+		result = {}
+		if not self.permissions.calls :
+			return result
+		if call_id==None:
+			data = self._get_calls()['data']
+			if not data['success']:
+				return result
+			self._calls = {}
+			calls = data['result']
+			for call in calls:
+				callinfos = self._build_callinfos(call)
+				self._calls[call['id']] = callinfos
+			return self._calls
+		else:
+			data = self._get_call(call_id)['data']
+			print(data)
+			if not data['success']:
+				return result
+			call = data['result']
+			callinfos = self._build_callinfos(call)
+			return callinfos
+
+	def _get_contacts(self):
+		@self.api.call('/contact/')
+		def wrapper():
+			return {}
+
+		return wrapper()
+
+	def _get_contact(self,contact_id):
+		@self.api.call('/contact/:id')
+		def wrapper():
+			args = {'id': contact_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	
+	def _build_contactinfos(self,contact):
+		contactinfos = Contact()
+		for index in contact:
+			if index == "last_update":
+				setattr(contactinfos,index,datetime.fromtimestamp(contact[index]))
+			elif index == "duration":
+				setattr(contactinfos,index,timedelta(seconds=contact[index]))
+			else:
+				setattr(contactinfos,index,contact[index])
+		return contactinfos
+	
+	def get_contacts(self,contact_id=None):
+		result = {}
+		if not self.permissions.contacts :
+			return result
+		if contact_id==None:
+			data = self._get_contacts()['data']
+			print(data)
+			try:
+				if not data['success']:
+					return result
+			except KeyError:
+				return result
+			contacts = data['result']
+			print(contacts)
+		else:
+			data = self._get_contact(contact_id)['data']
+			#print(data)
+			if not data['success']:
+				return result
+			contact = data['result']
+			contactinfos = self._build_contactinfos(contact)
+			return contactinfos
+
 
 	def get_permissions(self):
 		return self._permissions
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
+	calls       = property(get_calls, None, None, "freebox calls dict")
 	
 class Permissions(object):
 	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
@@ -192,3 +481,40 @@ class Permissions(object):
 	def __getitem__(self, index):
 		"tuple/list style getitem"
 		return getattr(self, self.__slots__[index])	
+
+
+class Call(object):
+	__slots__= "number", "type", "id", "duration", "datetime", "contact_id", "line_id", "name", "new", "missed", "accepted", "outgoing"
+	
+	def items(self):
+		"dict style items"
+		return [
+			(field_name, getattr(self, field_name))
+			for field_name in self.__slots__]
+
+	def __iter__(self):
+		"iterate over fields tuple/list style"
+		for field_name in self.__slots__:
+			yield getattr(self, field_name)
+
+	def __getitem__(self, index):
+		"tuple/list style getitem"
+		return getattr(self, self.__slots__[index])	
+
+class Contact(object):
+	__slots__= "first_name", "last_name", "display_name", "addresses", "notes", "company", "emails", "last_update", "birthday", "numbers", "urls", "id", "photo_url"
+	
+	def items(self):
+		"dict style items"
+		return [
+			(field_name, getattr(self, field_name))
+			for field_name in self.__slots__]
+
+	def __iter__(self):
+		"iterate over fields tuple/list style"
+		for field_name in self.__slots__:
+			yield getattr(self, field_name)
+
+	def __getitem__(self, index):
+		"tuple/list style getitem"
+		return getattr(self, self.__slots__[index])		
