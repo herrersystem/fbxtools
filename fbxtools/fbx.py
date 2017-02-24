@@ -504,7 +504,7 @@ class Fbx():
 		self._groups = {}
 		print(groups)
 		for group in groups:
-			groupinfos = self._build_groupinfos(groups)
+			groupinfos = self._build_groupinfos(group)
 			self._contacts[group['id']] = groupinfos
 		return self._groups
 	
