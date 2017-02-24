@@ -194,6 +194,23 @@ class Fbx():
 
 		return wrapper()
 	
+	def _system_reboot(self):
+		@self.api.call('/system/reboot/')
+		def wrapper():
+			return {}
+
+		return wrapper()
+	
+	def system_reboot(self,reboot=False):
+		if reboot:
+			data = self._system_reboot()
+			try:
+				return data['success']
+			except:
+				return False
+		else:
+			return = False
+	
 	def get_system_infos(self):
 		data = self.get_system()['data']
 		if data['success']:
