@@ -421,16 +421,16 @@ class Fbx():
 	def _get_contacts(self,start=0,limit=-1,group_id=None):
 		@self.api.call('/contact/')
 		def wrapper():
-			parameters = {'start': start, 'limit': limit, 'group_id': group_id}
-			return {'parameters': parameters}
+			data = {'start': start, 'limit': limit, 'group_id': group_id}
+			return {'data': parameters}
 
 		return wrapper()
 
 	def _get_contact(self,contact_id):
 		@self.api.call('/contact/:id')
 		def wrapper():
-			data = {'id': contact_id}
-			return {'data': data}
+			args = {'args': contact_id}
+			return {'args': data}
 
 		return wrapper()
 	
