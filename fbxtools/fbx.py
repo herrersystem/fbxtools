@@ -210,7 +210,7 @@ class Fbx():
 			except:
 				return False
 		else:
-			return = False
+			return False
 	
 	def get_system_infos(self):
 		data = self.get_system()['data']
