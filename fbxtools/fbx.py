@@ -216,6 +216,7 @@ class Fbx():
 				setattr(boxinfos,index,timedelta(seconds=data[index]))
 			else:
 				setattr(boxinfos,index,data[index])
+		setattr(boxinfos,"boxinfos_loaded",True)
 		return boxinfos
 	
 	
