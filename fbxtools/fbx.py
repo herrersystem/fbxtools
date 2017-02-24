@@ -617,4 +617,4 @@ class Group(object):
 		result = []
 		for field_name in self.__slots__:
 			result.append("%s: %s" % (field_name, getattr(self,field_name)))
-		return result.join(u", ")
+		return u", ".join(result)
