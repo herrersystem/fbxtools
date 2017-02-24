@@ -37,6 +37,7 @@ class Fbx():
 		
 		self._calls    = {}
 		self._contacts = {}
+		self._groups = {}
 
 		self._boxinfos_loaded = False
 		self._uptime = timedelta(days=0) 
@@ -473,12 +474,45 @@ class Fbx():
 			self._contacts[contact['id']] = contactinfos
 		return self._contacts
 
+	def _get_groups(self):
+		@self.api.call('/group/')
+		def wrapper():
+			return {}
+
+		return wrapper()
+	
+	def self._build_groupinfos(self,group):
+		groupinfos = Group()
+		for index in group:
+			setattr(groupinfos,index,group[index])
+		return groupinfos		
+
+	def get_groups(self):
+		result = {}
+		if not self.permissions.contacts :
+			return result
+		data = self._get_groups()['data']
+		print(data)
+		try:
+			if not data['success']:
+				return result
+		except KeyError:
+			return result
+		groups = data['result']
+		self._groups = {}
+		print(groups)
+		for group in groups:
+			groupinfos = self._build_groupinfos(groups)
+			self._contacts[group['id']] = groupinfos
+		return self._groups
+	
 
 	def get_permissions(self):
 		return self._permissions
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
+	groups      = property(get_groups, None, None, "freebox groups dict")
 	
 	uptime = property(get_uptime, None, None, "freebox uptime timedelta")
 	disk_status = property(get_disk_status, None, None, "freebox disk_status string")
@@ -560,3 +594,21 @@ class Contact(object):
 	def __getitem__(self, index):
 		"tuple/list style getitem"
 		return getattr(self, self.__slots__[index])		
+
+class Group(object):
+	__slots__= "nb_contact", "id", "name"
+	
+	def items(self):
+		"dict style items"
+		return [
+			(field_name, getattr(self, field_name))
+			for field_name in self.__slots__]
+
+	def __iter__(self):
+		"iterate over fields tuple/list style"
+		for field_name in self.__slots__:
+			yield getattr(self, field_name)
+
+	def __getitem__(self, index):
+		"tuple/list style getitem"
+		return getattr(self, self.__slots__[index])
