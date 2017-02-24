@@ -35,7 +35,8 @@ class Fbx():
 		self._permissions.settings   = False
 		self._permissions.downloader = False
 		
-		self._calls = {}
+		self._calls    = {}
+		self._contacts = {}
 
 		self._boxinfos_loaded = False
 		self._uptime = timedelta(days=0) 
@@ -409,17 +410,18 @@ class Fbx():
 			return self._calls
 		else:
 			data = self._get_call(call_id)['data']
-			print(data)
+			#print(data)
 			if not data['success']:
 				return result
 			call = data['result']
 			callinfos = self._build_callinfos(call)
 			return callinfos
 
-	def _get_contacts(self):
+	def _get_contacts(self,start=0,limit=-1,group_id=None):
 		@self.api.call('/contact/')
 		def wrapper():
-			return {}
+			parameters = {'start': start, 'limit': limit, 'group_id': group_id}
+			return {'parameters'=parameters}
 
 		return wrapper()
 
@@ -443,28 +445,33 @@ class Fbx():
 				setattr(contactinfos,index,contact[index])
 		return contactinfos
 	
-	def get_contacts(self,contact_id=None):
+	def get_contact(self,contact_id):
+		data = self._get_contact(contact_id)['data']
+		#print(data)
+		if not data['success']:
+			return result
+		contact = data['result']
+		contactinfos = self._build_contactinfos(contact)
+		return contactinfos
+	
+	def get_contacts(self,start=0,limit=-1,group_id=None):
 		result = {}
 		if not self.permissions.contacts :
 			return result
-		if contact_id==None:
-			data = self._get_contacts()['data']
-			print(data)
-			try:
-				if not data['success']:
-					return result
-			except KeyError:
-				return result
-			contacts = data['result']
-			print(contacts)
-		else:
-			data = self._get_contact(contact_id)['data']
-			#print(data)
+		data = self._get_contacts()['data']
+		print(data)
+		try:
 			if not data['success']:
 				return result
-			contact = data['result']
+		except KeyError:
+			return result
+		contacts = data['result']
+		self._contacts = {}
+		print(contacts)
+		for contact in contacts:
 			contactinfos = self._build_contactinfos(contact)
-			return contactinfos
+			self._contacts[call['id']] = contactinfos
+		return self._contacts
 
 
 	def get_permissions(self):
