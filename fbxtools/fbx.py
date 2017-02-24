@@ -616,5 +616,5 @@ class Group(object):
 	def __str__(self):
 		result = []
 		for slot in __slots__:
-			result.append("%s: %s" % (slot, getattr(self,slot))
+			result.append("%s: %s" % (slot, getattr(self,slot)))
 		return result.join(u", ")
