@@ -429,8 +429,8 @@ class Fbx():
 	def _get_contact(self,contact_id):
 		@self.api.call('/contact/:id')
 		def wrapper():
-			args = {'id': contact_id}
-			return {'args': args}
+			data = {'id': contact_id}
+			return {'data': data}
 
 		return wrapper()
 	
