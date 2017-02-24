@@ -412,7 +412,10 @@ class FreeboxObj(object):
 		result = []
 		for field_name in self.__slots__:
 			if field_name != "__dict__":
-				result.append("%s: '%s'" % (field_name, getattr(self,field_name)))
+				try:
+					result.append("%s: '%s'" % (field_name, getattr(self,field_name)))
+				except:
+					pass
 		return u", ".join(result)
 	
 	
