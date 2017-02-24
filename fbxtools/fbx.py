@@ -482,10 +482,8 @@ class Fbx():
 		return wrapper()
 	
 	def _build_groupinfos(self,group):
-		print(group)
 		groupinfos = Group()
 		for index in group:
-			print(index)
 			setattr(groupinfos,index,group[index])
 		return groupinfos		
 
@@ -505,7 +503,7 @@ class Fbx():
 		print(groups)
 		for group in groups:
 			groupinfos = self._build_groupinfos(group)
-			self._contacts[group['id']] = groupinfos
+			self._groups[group['id']] = groupinfos
 		return self._groups
 	
 
