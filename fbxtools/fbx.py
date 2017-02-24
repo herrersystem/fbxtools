@@ -382,12 +382,12 @@ class Fbx():
 	
 	def __str__(self):
 		fbstr = u"uptime: %s, disk_status: %s\r\nfirmware_version: %s, box_authenticated: %s\r\n"\
-		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
+		% (self.boxinfos.uptime,self.boxinfos.disk_status,self.boxinfos.firmware_version,self.boxinfos.box_authenticated)
 		fbstr += u"fan_rpm: %s RPM, temp_cpub: %s °C, temp_cpum: %s °C, temp_sw: %s °C\r\n"\
-		% (self.fan_rpm,self.temp_cpub,self.temp_cpum,self.temp_sw)
+		% (self.boxinfos.fan_rpm,self.boxinfos.temp_cpub,self.boxinfos.temp_cpum,self.boxinfos.temp_sw)
 		fbstr += u"board_name: %s, mac: %s, serial: %s"\
-		% (self.board_name,self.mac,self.serial)
-		return unicode(fbstr)			
+		% (self.boxinfos.board_name,self.boxinfos.mac,self.boxinfos.serial)
+		return fbstr			
 
 
 class FreeboxObj(object):
