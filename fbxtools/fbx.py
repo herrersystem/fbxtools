@@ -330,15 +330,6 @@ class Fbx():
 				return self._firmware_version
 			else:
 				return ""
-	def __str__(self):
-		fbstr = u"uptime: %s, disk_status: %s, firmware_version: %s, box_authenticated: %s\r\n"\
-		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
-		fbstr += u"fan_rpm: %s RPM, temp_cpub: %s °C, temp_cpum: %s °C, temp_sw: %s °C\r\n"\
-		% (self.fan_rpm,self.temp_cpub,self.temp_cpum,self.temp_sw)
-		fbstr += u"board_name: %s, mac: %s, serial: %s"\
-		% (self.board_name,self.mac,self.serial)
-		return unicode(fbstr)			
-
 			
 	def get_permissions(self):
 		return self._permissions
@@ -476,6 +467,17 @@ class Fbx():
 	box_authenticated = property(get_box_authenticated, None, None, "freebox box_authenticated bool")
 	serial = property(get_serial, None, None, "freebox serial string")
 	firmware_version = property(get_firmware_version, None, None, "freebox firmware_version string")
+	
+
+	def __str__(self):
+		fbstr = u"uptime: %s, disk_status: %s, firmware_version: %s, box_authenticated: %s\r\n"\
+		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
+		fbstr += u"fan_rpm: %s RPM, temp_cpub: %s °C, temp_cpum: %s °C, temp_sw: %s °C\r\n"\
+		% (self.fan_rpm,self.temp_cpub,self.temp_cpum,self.temp_sw)
+		fbstr += u"board_name: %s, mac: %s, serial: %s"\
+		% (self.board_name,self.mac,self.serial)
+		return unicode(fbstr)			
+
 	
 class Permissions(object):
 	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
