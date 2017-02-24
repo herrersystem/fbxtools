@@ -470,7 +470,7 @@ class Fbx():
 		print(contacts)
 		for contact in contacts:
 			contactinfos = self._build_contactinfos(contact)
-			self._contacts[call['id']] = contactinfos
+			self._contacts[contact['contact_id']] = contactinfos
 		return self._contacts
 
 
