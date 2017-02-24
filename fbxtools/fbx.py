@@ -459,7 +459,7 @@ class Fbx():
 		result = {}
 		if not self.permissions.contacts :
 			return result
-		data = self._get_contacts()['data']
+		data = self._get_contacts(start,limit,group_id)['data']
 		#print(data)
 		try:
 			if not data['success']:
@@ -468,7 +468,7 @@ class Fbx():
 			return result
 		contacts = data['result']
 		self._contacts = {}
-		print(contacts)
+		#☺print(contacts)
 		for contact in contacts:
 			contactinfos = self._build_contactinfos(contact)
 			self._contacts[contact['id']] = contactinfos
