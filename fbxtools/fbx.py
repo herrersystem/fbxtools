@@ -209,9 +209,21 @@ class Fbx():
 		else:
 			return False
 	
+	def _build_boxinfos(self,data):
+		boxinfos = Boxinfos()
+		for index in data:
+			if index == "uptime_val":
+				setattr(boxinfos,index,timedelta(seconds=data[index]))
+			else:
+				setattr(boxinfos,index,data[index])
+		return boxinfos
+	
+	
 	def get_system_infos(self):
 		data = self.get_system()['data']
 		if data['success']:
+			boxinfos = self._build_boxinfos(data['result'])
+			print("BoxInfos:%s" % boxinfos)
 			self._uptime      = data['result']['uptime']
 			self._disk_status = data['result']['disk_status'] 
 			self._fan_rpm	  = data['result']['fan_rpm']
