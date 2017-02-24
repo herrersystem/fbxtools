@@ -36,18 +36,6 @@ class Fbx():
 		self._groups = {}
 
 		self._boxinfos_loaded = False
-		self._uptime = timedelta(days=0) 
-		self._disk_status = "" 
-		self._fan_rpm = 0
-		self._temp_cpub = 0
-		self._uptime_val = 0 
-		self._board_name = "" 
-		self._mac = "" 
-		self._temp_cpum = 0
-		self._temp_sw = 0
-		self._box_authenticated = False
-		self._serial = ""
-		self._firmware_version = ""
 
 	def init_app(self, infos):
 		@self.api.call('/login/authorize/', method='POST')
@@ -220,152 +208,12 @@ class Fbx():
 		return boxinfos
 	
 	
-	def get_system_infos(self):
+	def get_boxinfos(self):
 		data = self.get_system()['data']
 		if data['success']:
 			boxinfos = self._build_boxinfos(data['result'])
-			print("BoxInfos:%s" % boxinfos)
-			self._uptime      = data['result']['uptime']
-			self._disk_status = data['result']['disk_status'] 
-			self._fan_rpm	  = data['result']['fan_rpm']
-			self._temp_cpub   = data['result']['temp_cpub']
-			self._uptime_val  = timedelta(seconds=data['result']['uptime_val'])
-			self._board_name  = data['result']['board_name']
-			self._mac	  = data['result']['mac'] 
-			self._temp_cpum   = data['result']['temp_cpum']
-			self._temp_sw	  = data['result']['temp_sw']
-			self._box_authenticated = data['result']['box_authenticated']
-			self._serial      = data['result']['serial']
-			self._firmware_version  = data['result']['firmware_version']
-			self._boxinfos_loaded = True
-		return data
-	
-	def _get_system_info(self):
-		if self._boxinfos_loaded:
-			return True
-		data = self.get_system_infos()
-		if data['success']:
-			return self._boxinfos_loaded
-		return False
-			
-		
-	
-	def get_uptime(self):
-		if self._get_system_info():
-			return self._uptime
-		else:
-			return ""
-		
-	def get_fan_rpm(self):
-		if self._boxinfos_loaded:
-			return self._fan_rpm
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._fan_rpm
-			else:
-				return 0
-		
-	def get_disk_status(self):
-		if self._boxinfos_loaded:
-			return self._disk_status
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._disk_status
-			else:
-				return 0
-		
-	def get_temp_cpub(self):
-		if self._boxinfos_loaded:
-			return self._temp_cpub
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._temp_cpub
-			else:
-				return 0
-		
-	def get_uptime_val(self):
-		if self._boxinfos_loaded:
-			return self._uptime_val
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._uptime_val
-			else:
-				return 0
-		
-	def get_board_name(self):
-		if self._boxinfos_loaded:
-			return self._board_name
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._board_name
-			else:
-				return ""
-		
-	def get_mac(self):
-		if self._boxinfos_loaded:
-			return self._mac
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._mac
-			else:
-				return ""
-		
-	def get_temp_cpum(self):
-		if self._boxinfos_loaded:
-			return self._temp_cpum
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._temp_cpum
-			else:
-				return 0
-		
-	def get_temp_sw(self):
-		if self._boxinfos_loaded:
-			return self._temp_sw
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._temp_sw
-			else:
-				return 0
-		
-	def get_box_authenticated(self):
-		if self._boxinfos_loaded:
-			return self._box_authenticated
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._box_authenticated
-			else:
-				return False
-		
-	def get_serial(self):
-		if self._boxinfos_loaded:
-			return self._serial
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._serial
-			else:
-				return ""
-		
-	def get_firmware_version(self):
-		if self._boxinfos_loaded:
-			return self._firmware_version
-		else:
-			uptime = self.uptime
-			if self._uptime != timedelta(days=0):
-				return self._firmware_version
-			else:
-				return ""
-			
+		return boxinfos
+				
 	def get_permissions(self):
 		return self._permissions
 	
@@ -530,21 +378,8 @@ class Fbx():
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
 	groups      = property(get_groups, None, None, "freebox groups dict")
+	boxinfos    = property(get_boxinfos, None, None, "freebox infos Boxinfos")
 	
-	uptime = property(get_uptime, None, None, "freebox uptime timedelta")
-	disk_status = property(get_disk_status, None, None, "freebox disk_status string")
-	fan_rpm = property(get_fan_rpm, None, None, "freebox fan rpm int")
-	temp_cpub = property(get_temp_cpub, None, None, "freebox temp cpu b int")
-	uptime_val = property(get_uptime_val, None, None, "freebox uptime_val int")
-	board_name = property(get_board_name, None, None, "freebox board name string")
-	mac = property(get_mac, None, None, "freebox mac address string")
-	temp_cpum = property(get_temp_cpum, None, None, "freebox temp cpu m int")
-	temp_sw = property(get_temp_sw, None, None, "freebox temp sw int")
-	box_authenticated = property(get_box_authenticated, None, None, "freebox box_authenticated bool")
-	serial = property(get_serial, None, None, "freebox serial string")
-	firmware_version = property(get_firmware_version, None, None, "freebox firmware_version string")
-	
-
 	def __str__(self):
 		fbstr = u"uptime: %s, disk_status: %s\r\nfirmware_version: %s, box_authenticated: %s\r\n"\
 		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
