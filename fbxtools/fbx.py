@@ -517,7 +517,8 @@ class Permissions(object):
 
 
 class Call(object):
-	__slots__= "number", "type", "id", "duration", "datetime", "contact_id", "line_id", "name", "new", "missed", "accepted", "outgoing"
+	__slots__= "number", "type", "id", "duration", "datetime", "contact_id", "line_id", "name", "new",\
+			"missed", "accepted", "outgoing"
 	
 	def items(self):
 		"dict style items"
@@ -535,7 +536,8 @@ class Call(object):
 		return getattr(self, self.__slots__[index])	
 
 class Contact(object):
-	__slots__= "first_name", "last_name", "display_name", "addresses", "notes", "company", "emails", "last_update", "birthday", "numbers", "urls", "id", "photo_url"
+	__slots__= "first_name", "last_name", "display_name", "addresses", "notes", "company", "emails",\
+			"last_update", "birthday", "numbers", "urls", "id", "photo_url"
 	
 	def items(self):
 		"dict style items"
