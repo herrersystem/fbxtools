@@ -612,3 +612,9 @@ class Group(object):
 	def __getitem__(self, index):
 		"tuple/list style getitem"
 		return getattr(self, self.__slots__[index])
+	
+	def __str__(self):
+		result = []
+		for slot in __slots__:
+			result.append("%s: %s" % (slot, getattr(self,slot))
+		return result.join(u", ")
