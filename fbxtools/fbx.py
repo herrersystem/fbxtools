@@ -482,10 +482,10 @@ class Fbx():
 		return wrapper()
 	
 	def _build_groupinfos(self,group):
-		print group
+		print(group)
 		groupinfos = Group()
 		for index in group:
-			print index
+			print(index)
 			setattr(groupinfos,index,group[index])
 		return groupinfos		
 
