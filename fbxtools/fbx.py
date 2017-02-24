@@ -472,7 +472,10 @@ class Fbx():
 		#☺print(contacts)
 		for contact in contacts:
 			contactinfos = self._build_contactinfos(contact)
-			self._contacts[contact['id']] = contactinfos
+			if group_id!=None:
+				self._contacts[contact['id']] = contactinfos
+			else:
+				self._contacts[contact['id']] = contactinfos
 		return self._contacts
 
 	def _get_groups(self):
