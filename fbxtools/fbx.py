@@ -471,7 +471,7 @@ class Fbx():
 	
 
 	def __str__(self):
-		fbstr = u"uptime: %s, disk_status: %s, firmware_version: %s, box_authenticated: %s\r\n"\
+		fbstr = u"uptime: %s, disk_status: %s\r\nfirmware_version: %s, box_authenticated: %s\r\n"\
 		% (self.uptime,self.disk_status,self.firmware_version,self.box_authenticated)
 		fbstr += u"fan_rpm: %s RPM, temp_cpub: %s °C, temp_cpum: %s °C, temp_sw: %s °C\r\n"\
 		% (self.fan_rpm,self.temp_cpub,self.temp_cpum,self.temp_sw)
