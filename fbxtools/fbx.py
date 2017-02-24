@@ -563,86 +563,16 @@ class FreeboxObj(object):
 				result.append("%s: %s" % (field_name, getattr(self,field_name)))
 		return u", ".join(result)
 	
-class Permissions(object):
+class Permissions(FreeboxObj):
 	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
 	
-	def items(self):
-		"dict style items"
-		return [
-			(field_name, getattr(self, field_name))
-			for field_name in self.__slots__]
-
-	def __iter__(self):
-		"iterate over fields tuple/list style"
-		for field_name in self.__slots__:
-			yield getattr(self, field_name)
-
-	def __getitem__(self, index):
-		"tuple/list style getitem"
-		return getattr(self, self.__slots__[index])	
-
-
-class Call(object):
+class Call(FreeboxObj):
 	__slots__= "number", "type", "id", "duration", "datetime", "contact_id", "line_id", "name", "new",\
 			"missed", "accepted", "outgoing"
-	
-	def items(self):
-		"dict style items"
-		return [
-			(field_name, getattr(self, field_name))
-			for field_name in self.__slots__]
 
-	def __iter__(self):
-		"iterate over fields tuple/list style"
-		for field_name in self.__slots__:
-			yield getattr(self, field_name)
-
-	def __getitem__(self, index):
-		"tuple/list style getitem"
-		return getattr(self, self.__slots__[index])	
-
-class Contact(object):
-	__slots__= "first_name", "last_name", "display_name", "addresses", "notes", "company", "emails",\
+class Contact(FreeboxObj):
+	__slots__= "__dict__","first_name", "last_name", "display_name", "addresses", "notes", "company", "emails",\
 			"last_update", "birthday", "numbers", "urls", "id", "photo_url"
-	
-	def items(self):
-		"dict style items"
-		return [
-			(field_name, getattr(self, field_name))
-			for field_name in self.__slots__]
-
-	def __iter__(self):
-		"iterate over fields tuple/list style"
-		for field_name in self.__slots__:
-			yield getattr(self, field_name)
-
-	def __getitem__(self, index):
-		"tuple/list style getitem"
-		return getattr(self, self.__slots__[index])		
-
-class Group1(object):
-	__slots__= "nb_contact", "id", "name"
-	
-	def items(self):
-		"dict style items"
-		return [
-			(field_name, getattr(self, field_name))
-			for field_name in self.__slots__]
-
-	def __iter__(self):
-		"iterate over fields tuple/list style"
-		for field_name in self.__slots__:
-			yield getattr(self, field_name)
-
-	def __getitem__(self, index):
-		"tuple/list style getitem"
-		return getattr(self, self.__slots__[index])
-	
-	def __str__(self):
-		result = []
-		for field_name in self.__slots__:
-			result.append("%s: %s" % (field_name, getattr(self,field_name)))
-		return u", ".join(result)
 
 class Group(FreeboxObj):
 	__slots__= "__dict__", "nb_contact", "id", "name"
