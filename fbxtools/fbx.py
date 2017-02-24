@@ -421,7 +421,7 @@ class Fbx():
 		@self.api.call('/contact/')
 		def wrapper():
 			parameters = {'start': start, 'limit': limit, 'group_id': group_id}
-			return {'parameters'=parameters}
+			return {'parameters': parameters}
 
 		return wrapper()
 
