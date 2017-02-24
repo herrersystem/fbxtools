@@ -459,7 +459,7 @@ class Fbx():
 		if not self.permissions.contacts :
 			return result
 		data = self._get_contacts()['data']
-		print(data)
+		#print(data)
 		try:
 			if not data['success']:
 				return result
