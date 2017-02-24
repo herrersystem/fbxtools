@@ -539,7 +539,7 @@ class Fbx():
 
 
 class FreeboxObj(object):
-	__slots__= ""
+	__slots__= ()
 	
 	def items(self):
 		"dict style items"
@@ -644,4 +644,4 @@ class Group1(object):
 		return u", ".join(result)
 
 class Group(FreeboxObj):
-	__slots__= "nb_contact", "id", "name"
+	__slots__= "__dict__", "nb_contact", "id", "name"
