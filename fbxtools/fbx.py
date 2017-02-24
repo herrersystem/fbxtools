@@ -537,6 +537,30 @@ class Fbx():
 		% (self.board_name,self.mac,self.serial)
 		return unicode(fbstr)			
 
+
+class FreeboxObj(object):
+	__slots__= ""
+	
+	def items(self):
+		"dict style items"
+		return [
+			(field_name, getattr(self, field_name))
+			for field_name in self.__slots__]
+
+	def __iter__(self):
+		"iterate over fields tuple/list style"
+		for field_name in self.__slots__:
+			yield getattr(self, field_name)
+
+	def __getitem__(self, index):
+		"tuple/list style getitem"
+		return getattr(self, self.__slots__[index])
+	
+	def __str__(self):
+		result = []
+		for field_name in self.__slots__:
+			result.append("%s: %s" % (field_name, getattr(self,field_name)))
+		return u", ".join(result)
 	
 class Permissions(object):
 	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
@@ -595,7 +619,7 @@ class Contact(object):
 		"tuple/list style getitem"
 		return getattr(self, self.__slots__[index])		
 
-class Group(object):
+class Group1(object):
 	__slots__= "nb_contact", "id", "name"
 	
 	def items(self):
@@ -618,3 +642,6 @@ class Group(object):
 		for field_name in self.__slots__:
 			result.append("%s: %s" % (field_name, getattr(self,field_name)))
 		return u", ".join(result)
+
+class Group(FreeboxObj):
+	__slots__= "nb_contact", "id", "name"
