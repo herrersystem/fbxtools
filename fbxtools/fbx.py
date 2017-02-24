@@ -464,6 +464,19 @@ class Fbx():
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
 	
+	uptime = property(get_uptime, None, None, "freebox uptime timedelta")
+	disk_status = property(get_disk_status, None, None, "freebox disk_status string")
+	fan_rpm = property(get_fan_rpm, None, None, "freebox fan rpm int")
+	temp_cpub = property(get_temp_cpub, None, None, "freebox temp cpu b int")
+	uptime_val = property(get_uptime_val, None, None, "freebox uptime_val int")
+	board_name = property(get_board_name, None, None, "freebox board name string")
+	mac = property(get_mac, None, None, "freebox mac address string")
+	temp_cpum = property(get_temp_cpum, None, None, "freebox temp cpu m int")
+	temp_sw = property(get_temp_sw, None, None, "freebox temp sw int")
+	box_authenticated = property(get_box_authenticated, None, None, "freebox box_authenticated bool")
+	serial = property(get_serial, None, None, "freebox serial string")
+	firmware_version = property(get_firmware_version, None, None, "freebox firmware_version string")
+	
 class Permissions(object):
 	__slots__= "pvr", "explorer", "calls", "contacts", "tv", "parental", "settings", "downloader"
 	
