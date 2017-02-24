@@ -577,24 +577,10 @@ class FreeboxObj(object):
 		result = []
 		for field_name in self.__slots__:
 			if field_name != "__dict__":
-				result.append("%s: %s" % (field_name, getattr(self,field_name)))
+				result.append("%s: '%s'" % (field_name, getattr(self,field_name)))
 		return u", ".join(result)
 	
 	
-		self._boxinfos_loaded = False
-		self._uptime = timedelta(days=0) 
-		self._disk_status = "" 
-		self._fan_rpm = 0
-		self._temp_cpub = 0
-		self._uptime_val = 0 
-		self._board_name = "" 
-		self._mac = "" 
-		self._temp_cpum = 0
-		self._temp_sw = 0
-		self._box_authenticated = False
-		self._serial = ""
-		self._firmware_version = ""
-		
 class Boxinfos(FreeboxObj):
 	__slots__= "uptime", "disk_status", "fan_rpm", "temp_cpub", "uptime_val", "board_name", "mac",\
 		"temp_cpum", "temp_sw", "box_authenticated", "serial", "firmware_version","boxinfos_loaded"
