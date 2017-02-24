@@ -231,12 +231,18 @@ class Fbx():
 			self._boxinfos_loaded = True
 		return data
 	
-	def get_uptime(self):
+	def _get_system_info(self):
 		if self._boxinfos_loaded:
-			return self._uptime
-
+			return True
 		data = self.get_system_infos()
 		if data['success']:
+			return self._boxinfos_loaded
+		return False
+			
+		
+	
+	def get_uptime(self):
+		if self._get_system_info():
 			return self._uptime
 		else:
 			return ""
