@@ -112,4 +112,8 @@ if __name__ == "__main__":
 	resp = get_config()
 	print(resp)
 ```
+### Fbx class properties
 
+```
+from fbxtools.fbx import Fbx
+```
