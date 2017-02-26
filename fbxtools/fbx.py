@@ -470,7 +470,8 @@ class FreeboxObj(object):
 		for field_name in self.__slots__:
 			if field_name != "__dict__":
 				try:
-					result[field_name] = getattr(self,field_name)
+					if getattr(self,field_name) != None:
+						result[field_name] = getattr(self,field_name)
 				except:
 					pass
 		return result
