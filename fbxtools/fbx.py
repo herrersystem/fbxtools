@@ -396,7 +396,6 @@ class Fbx():
 	def _set_number(self,number_id,data):
 		@self.api.call('/number/:id', method='PUT')
 		def wrapper():
-			print(data)
 			args = {'id': number_id}
 			return {'args': args, 'data': data, 'is_json': True}
 
@@ -404,7 +403,6 @@ class Fbx():
 	
 	def get_number(self,number_id):
 		data = self._get_number(number_id)['data']
-		#print("_get_contact:%s" % data)
 		if not data['success']:
 			return Number()
 		number = data['result']
@@ -413,8 +411,6 @@ class Fbx():
 	
 	def set_number(self,number_id,numberinfos):
 		numberinfos.id = None
-		#numberinfos.contact_id = None
-		#numberinfos.is_own = None
 		infosdict = numberinfos.fbobj2dict()
 		data = self._set_number(number_id,infosdict)['data']
 		if not data['success']:
