@@ -368,10 +368,9 @@ class Fbx():
 			return False
 		data = self._delete_contact(contact_id)['data']
 		try:
-			if not data['success']:
-				return False
-		except KeyError:
 			return data['success']
+		except KeyError:			
+			return False
 
 	def _get_groups(self):
 		@self.api.call('/group/')
