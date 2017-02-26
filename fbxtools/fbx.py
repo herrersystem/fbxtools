@@ -304,8 +304,14 @@ class Fbx():
 			return {'data': data, 'is_json': True}
 
 		return wrapper()
-	
 
+	def _delete_contact(self,contact_id):
+		@self.api.call('/contact/:id', method='DELETE')
+		def wrapper():
+			args = {'id': contact_id}
+			return {'args': args}
+
+		return wrapper()
 	
 	def _build_contactinfos(self,contact):
 		contactinfos = Contact()
@@ -356,6 +362,16 @@ class Fbx():
 			else:
 				self._contacts[contact['id']] = contactinfos
 		return self._contacts
+	
+	def delete_contacts(self,contact_id):
+		if not self.permissions.contacts :
+			return False
+		data = self._delete_contacts(contact_id)['data']
+		try:
+			if not data['success']:
+				return False
+		except KeyError:
+			return data['success']
 
 	def _get_groups(self):
 		@self.api.call('/group/')
