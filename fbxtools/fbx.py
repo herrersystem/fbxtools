@@ -436,3 +436,16 @@ class Contact(FreeboxObj):
 
 class Group(FreeboxObj):
 	__slots__= "__dict__", "nb_contact", "id", "name"
+
+class Number(FreeboxObj):
+	__slots__= "__dict__", "number", "id", "contact_id", "is_default", "is_own"
+
+class Address(FreeboxObj):
+	__slots__= "__dict__", "city", "country", "street2", "zipcode", "contact_id", "number", "street", "type", "id"
+
+class Emails(FreeboxObj):
+	__slots__= "__dict__", "email", "contact_id", "type", "id"
+
+class Urls(FreeboxObj):
+	__slots__= "__dict__", "url", "contact_id", "type", "id"
+	
