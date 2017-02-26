@@ -448,6 +448,38 @@ class Fbx():
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
+	
+	def _get_email(self,email_id):
+		@self.api.call('/email/:id')
+		def wrapper():
+			args = {'id': email_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_email(self,email_id,data):
+		@self.api.call('/email/:id', method='PUT')
+		def wrapper():
+			args = {'id': email_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+	
+	def get_email(self,email_id):
+		data = self._get_email(email_id)['data']
+		if not data['success']:
+			return Email()
+		email = data['result']
+		emailinfos = self.build_fbobj(Email,email)
+		return emailinfos
+	
+	def set_email(self,email_id,emailinfos):
+		emailinfos.id = None
+		infosdict = emailinfos.fbobj2dict()
+		data = self._set_email(email_id,infosdict)['data']
+		if not data['success']:
+			return (data['success'], data['error_code'])
+		return (data['success'], data['result'])
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
