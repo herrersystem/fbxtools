@@ -375,14 +375,40 @@ class Fbx():
 	def get_permissions(self):
 		return self._permissions
 	
-	def _build_infos(self,obj_class,data):
+	
+	def build_fbobj(obj_class,data):
 		infos = obj_class()
 		for index in data:
-			if index == "last_update":
-				setattr(infos,index,datetime.fromtimestamp(data[index]))
+			if data[index] == None:
+				pass
 			else:
 				setattr(infos,index,data[index])
 		return infos
+	
+	def _get_number(self,number_id):
+		@self.api.call('/number/:id')
+		def wrapper():
+			args = {'id': number_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def get_number(self,number_id):
+		data = self._get_contact(number_id)['data']
+		#print(data)
+		if not data['success']:
+			return Number()
+		number = data['result']
+		numberinfos = self.build_fbobj(Number,number)
+		return numberinfos
+	
+	def set_number(self,numberinfos):
+		infosdict = numberinfos.fbobj2dict()
+		data = self._set_number(number_id,infosdict)['data']
+		#print(data)
+		if not data['success']:
+			return (result, data['error_code'])
+		return (result, data['result'])
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
@@ -427,6 +453,15 @@ class FreeboxObj(object):
 					pass
 		return u", ".join(result)
 	
+	def fbobj2dict(self):
+		result = {}
+		for field_name in self.__slots__:
+			if field_name != "__dict__":
+				try:
+					result[field_name] = getattr(self,field_name)
+				except:
+					pass
+		return result
 	
 class Boxinfos(FreeboxObj):
 	__slots__= "uptime", "disk_status", "fan_rpm", "temp_cpub", "uptime_val", "board_name", "mac",\
