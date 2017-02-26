@@ -444,7 +444,7 @@ class Fbx():
 	def set_address(self,address_id,addressinfos):
 		addressinfos.id = None
 		infosdict = addressinfos.fbobj2dict()
-		data = self._set_address_id,infosdict)['data']
+		data = self._set_address(address_id,infosdict)['data']
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
