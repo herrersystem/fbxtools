@@ -363,10 +363,10 @@ class Fbx():
 				self._contacts[contact['id']] = contactinfos
 		return self._contacts
 	
-	def delete_contacts(self,contact_id):
+	def delete_contact(self,contact_id):
 		if not self.permissions.contacts :
 			return False
-		data = self._delete_contacts(contact_id)['data']
+		data = self._delete_contact(contact_id)['data']
 		try:
 			if not data['success']:
 				return False
