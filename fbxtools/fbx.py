@@ -413,6 +413,7 @@ class Fbx():
 	
 	def set_number(self,number_id,numberinfos):
 		infosdict = numberinfos.fbobj2dict()
+		print(infosdict)
 		data = self._set_number(number_id,infosdict)['data']
 		#print(data)
 		if not data['success']:
