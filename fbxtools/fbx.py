@@ -480,6 +480,38 @@ class Fbx():
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
+	
+	def _get_url(self,url_id):
+		@self.api.call('/url/:id')
+		def wrapper():
+			args = {'id': url_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_url(self,url_id,data):
+		@self.api.call('/url/:id', method='PUT')
+		def wrapper():
+			args = {'id': url_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+	
+	def get_url(self,url_id):
+		data = self._get_url(url_id)['data']
+		if not data['success']:
+			return Urls()
+		url = data['result']
+		urlinfos = self.build_fbobj(Urls,url)
+		return urlinfos
+	
+	def set_url(self,url_id,urlinfos):
+		urlinfos.id = None
+		infosdict = urlinfos.fbobj2dict()
+		data = self._set_url(url_id,infosdict)['data']
+		if not data['success']:
+			return (data['success'], data['error_code'])
+		return (data['success'], data['result'])
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
