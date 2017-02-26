@@ -393,6 +393,14 @@ class Fbx():
 
 		return wrapper()
 	
+	def _set_number(self,number_id,data):
+		@self.api.call('/number/:id', method='PUT')
+		def wrapper():
+			args = {'id': number_id}
+			return {'args': args, 'data': data}
+
+		return wrapper()
+	
 	def get_number(self,number_id):
 		data = self._get_number(number_id)['data']
 		#print("_get_contact:%s" % data)
