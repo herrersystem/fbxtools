@@ -395,7 +395,7 @@ class Fbx():
 	
 	def get_number(self,number_id):
 		data = self._get_contact(number_id)['data']
-		#print(data)
+		print("_get_contact:%s" % data)
 		if not data['success']:
 			return Number()
 		number = data['result']
