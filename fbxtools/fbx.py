@@ -376,7 +376,7 @@ class Fbx():
 		return self._permissions
 	
 	
-	def build_fbobj(obj_class,data):
+	def build_fbobj(self,obj_class,data):
 		infos = obj_class()
 		for index in data:
 			if data[index] == None:
