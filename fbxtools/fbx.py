@@ -468,9 +468,9 @@ class Fbx():
 	def get_email(self,email_id):
 		data = self._get_email(email_id)['data']
 		if not data['success']:
-			return Email()
+			return Emails()
 		email = data['result']
-		emailinfos = self.build_fbobj(Email,email)
+		emailinfos = self.build_fbobj(Emails,email)
 		return emailinfos
 	
 	def set_email(self,email_id,emailinfos):
