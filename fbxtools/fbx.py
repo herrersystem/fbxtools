@@ -415,8 +415,8 @@ class Fbx():
 		data = self._set_number(number_id,infosdict)['data']
 		#print(data)
 		if not data['success']:
-			return (result, data['error_code'])
-		return (result, data['result'])
+			return (data['success'], data['error_code'])
+		return (data['success'], data['result'])
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
