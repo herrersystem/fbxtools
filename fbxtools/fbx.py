@@ -297,7 +297,15 @@ class Fbx():
 			return {'args': args}
 
 		return wrapper()
+
+	def _new_contact(self,data):
+		@self.api.call('/contact/', method='POST')
+		def wrapper():
+			return {'data': data, 'is_json': True}
+
+		return wrapper()
 	
+
 	
 	def _build_contactinfos(self,contact):
 		contactinfos = Contact()
@@ -318,6 +326,14 @@ class Fbx():
 		contact = data['result']
 		contactinfos = self._build_contactinfos(contact)
 		return contactinfos
+	
+	def new_contact(self,contactinfos):
+		contactinfos.id = None
+		infosdict = contactinfos.fbobj2dict()
+		data = self._new_contact(infosdict)['data']
+		if not data['success']:
+			return (data['success'], data['error_code'])
+		return (data['success'], data['result'])
 	
 	def get_contacts(self,start=0,limit=-1,group_id=None):
 		result = {}
