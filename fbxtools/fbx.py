@@ -396,6 +396,7 @@ class Fbx():
 	def _set_number(self,number_id,data):
 		@self.api.call('/number/:id', method='PUT')
 		def wrapper():
+			print(data)
 			args = {'id': number_id}
 			return {'args': args, 'data': data}
 
