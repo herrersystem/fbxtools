@@ -181,7 +181,7 @@ class Fbx():
 		return wrapper()
 	
 	def _system_reboot(self):
-		@self.api.call('/system/reboot/')
+		@self.api.call('/system/reboot/',method='POST')
 		def wrapper():
 			return {}
 
