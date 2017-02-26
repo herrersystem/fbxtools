@@ -338,8 +338,10 @@ class Fbx():
 		infosdict = contactinfos.fbobj2dict()
 		data = self._new_contact(infosdict)['data']
 		if not data['success']:
-			return (data['success'], data['error_code'])
-		return (data['success'], data['result'])
+			return contactinfos
+		contact = data['result']
+		contactinfos = self._build_contactinfos(contact)
+		return contactinfos
 	
 	def get_contacts(self,start=0,limit=-1,group_id=None):
 		result = {}
