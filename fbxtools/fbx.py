@@ -413,10 +413,9 @@ class Fbx():
 	
 	def set_number(self,number_id,numberinfos):
 		numberinfos.id = None
+		numberinfos.contact_id = None
 		infosdict = numberinfos.fbobj2dict()
-		print(infosdict)
 		data = self._set_number(number_id,infosdict)['data']
-		#print(data)
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
