@@ -31,4 +31,5 @@ if __name__ == "__main__":
 	}
 
 	resp = update_config(new_config)
+	app.disconnect_app()
 	print(resp)

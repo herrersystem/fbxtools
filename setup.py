@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name = 'fbxtools',
-	version = '1.1',
+	version = '1.2',
 	author = 'herrersystem',
 	author_email = 'contact@evhunter.fr',
 	
@@ -17,5 +17,6 @@ setup(name = 'fbxtools',
 		'License :: OSI Approved :: GNU General Public License (GPL)',
 		'Programming Language :: Python :: 3',
 		'Programming Language :: Python :: 3.4',
+		'Programming Language :: Python :: 3.5',
 	],
 )

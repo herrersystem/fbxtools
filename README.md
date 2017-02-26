@@ -21,7 +21,6 @@ Accept 3 arguments:
 * app_infos (__str__) : filepath of app_infos file (default: 'app_infos.json') 
 * app_auth (__str__) : filepath of app_auth file (default: 'app_auth.json')
 * verify_cert (__bool__ or __str__) : disable SSL cert verification or get certfile path. (default True)
-* mute (__bool__) : disable fbxtools message (default: False)
 
 ### app_infos.json file
 
@@ -59,11 +58,29 @@ example :
 from fbxtools.fbx import Fbx
 
 app = Fbx('http://mafreebox.freebox.fr/api/v3')
-app.get_app_token()
+appToken, trackId = app.get_app_token()
+print('[fbx] Press ">" on the dial of the Freebox')
+
+## Optionnaly, you can verify your authorization status for your app.
+import time
+
+currentStatus = ''
+attempt = 5
+while attempt > 0:
+	time.sleep(3)
+	response = app.track_auth_progress(trackId)
+	if response['data']['success']:
+		currentStatus = response['data']['result']['status']
+	if currentStatus == 'granted':
+		print('[fbx] Your application got authorization !')
+		break
+	print('[fbx] attempts remaining: ' + str(attempt) + 
+		', status: ' + currentStatus)
+	attempt -= 1
+app.disconnect_app()
 ```
 
-This function generated automatically 'app_auth.json' file.
-For Fbx.url argument, you can use:
+This function generated automatically 'app_auth.json' file. For Fbx.url argument, you can use:
 * generic url http://mafreebox.freebox.fr
 * get reel url with fbxtools.utils.get_url_api().
 
@@ -76,6 +93,7 @@ url_api = get_url_api()
 app = Fbx(url_api)
 app.get_app_token()
 ```
+
 Use this if you are on the __same network__ as your freebox.
 
 ### Call API.
@@ -102,14 +120,14 @@ def update_config(config):
 	return {'data': config, 'is_json': True}
 
 
-if __name__ == "__main__":
-	new_config = {	
-		"brightness": 50,
-		"orientation": 90,
-		"orientation_forced": False
-	}
+new_config = {	
+	"brightness": 50,
+	"orientation": 90,
+	"orientation_forced": False
+}
 
-	resp = get_config()
-	print(resp)
+resp = get_config()
+app.disconnect_app()
+print(resp)
 ```
 
