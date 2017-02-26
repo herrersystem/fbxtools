@@ -374,6 +374,15 @@ class Fbx():
 
 	def get_permissions(self):
 		return self._permissions
+	
+	def _build_infos(self,obj_class,data):
+		infos = obj_class()
+		for index in data:
+			if index == "last_update":
+				setattr(infos,index,datetime.fromtimestamp(data[index]))
+			else:
+				setattr(infos,index,data[index])
+		return infos
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
 	calls       = property(get_calls, None, None, "freebox calls dict")
