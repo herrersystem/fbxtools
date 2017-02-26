@@ -410,7 +410,7 @@ class Fbx():
 		numberinfos = self.build_fbobj(Number,number)
 		return numberinfos
 	
-	def set_number(self,numberinfos):
+	def set_number(self,number_id,numberinfos):
 		infosdict = numberinfos.fbobj2dict()
 		data = self._set_number(number_id,infosdict)['data']
 		#print(data)
