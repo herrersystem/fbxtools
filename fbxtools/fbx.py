@@ -621,9 +621,9 @@ class Fbx():
 	def get_email(self,email_id):
 		data = self._get_email(email_id)['data']
 		if not data['success']:
-			return Emails()
+			return Email()
 		email = data['result']
-		emailinfos = self.build_fbobj(Emails,email)
+		emailinfos = self.build_fbobj(Email,email)
 		return emailinfos
 	
 	def set_email(self,email_id,emailinfos):
@@ -637,9 +637,9 @@ class Fbx():
 	def get_url(self,url_id):
 		data = self._get_url(url_id)['data']
 		if not data['success']:
-			return Urls()
+			return Email()
 		url = data['result']
-		urlinfos = self.build_fbobj(Urls,url)
+		urlinfos = self.build_fbobj(Email,url)
 		return urlinfos
 	
 	def set_url(self,url_id,urlinfos):
@@ -728,9 +728,9 @@ class Number(FreeboxObj):
 class Address(FreeboxObj):
 	__slots__= "__dict__", "city", "country", "street2", "zipcode", "contact_id", "number", "street", "type", "id"
 
-class Emails(FreeboxObj):
+class Email(FreeboxObj):
 	__slots__= "__dict__", "email", "contact_id", "type", "id"
 
-class Urls(FreeboxObj):
+class Url(FreeboxObj):
 	__slots__= "__dict__", "url", "contact_id", "type", "id"
 	
