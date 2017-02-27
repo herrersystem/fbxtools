@@ -297,6 +297,15 @@ class Fbx():
 			return {'args': args}
 
 		return wrapper()
+	
+	def _set_contact(self,contact_id,data):
+		@self.api.call('/contact/:id', method='PUT')
+		def wrapper():
+			args = {'id': contact_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+
 
 	def _new_contact(self,data):
 		@self.api.call('/contact/', method='POST')
@@ -312,6 +321,131 @@ class Fbx():
 			return {'args': args}
 
 		return wrapper()
+	
+	def _get_number(self,number_id):
+		@self.api.call('/number/:id')
+		def wrapper():
+			args = {'id': number_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_number(self,number_id,data):
+		@self.api.call('/number/:id', method='PUT')
+		def wrapper():
+			args = {'id': number_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+
+	def _new_number(self,data):
+		@self.api.call('/number/', method='POST')
+		def wrapper():
+			return {'data': data, 'is_json': True}
+
+		return wrapper()
+
+	def _delete_number(self,number_id):
+		@self.api.call('/number/:id', method='DELETE')
+		def wrapper():
+			args = {'id': number_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _get_address(self,address_id):
+		@self.api.call('/address/:id')
+		def wrapper():
+			args = {'id': address_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_address(self,address_id,data):
+		@self.api.call('/address/:id', method='PUT')
+		def wrapper():
+			args = {'id': address_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+
+
+	def _new_address(self,data):
+		@self.api.call('/address/', method='POST')
+		def wrapper():
+			return {'data': data, 'is_json': True}
+
+		return wrapper()
+
+	def _delete_address(self,address_id):
+		@self.api.call('/address/:id', method='DELETE')
+		def wrapper():
+			args = {'id': address_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _get_email(self,email_id):
+		@self.api.call('/email/:id')
+		def wrapper():
+			args = {'id': email_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_email(self,email_id,data):
+		@self.api.call('/email/:id', method='PUT')
+		def wrapper():
+			args = {'id': email_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+
+
+	def _new_email(self,data):
+		@self.api.call('/email/', method='POST')
+		def wrapper():
+			return {'data': data, 'is_json': True}
+
+		return wrapper()
+
+	def _delete_email(self,email_id):
+		@self.api.call('/email/:id', method='DELETE')
+		def wrapper():
+			args = {'id': email_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _get_url(self,url_id):
+		@self.api.call('/url/:id')
+		def wrapper():
+			args = {'id': url_id}
+			return {'args': args}
+
+		return wrapper()
+	
+	def _set_url(self,url_id,data):
+		@self.api.call('/url/:id', method='PUT')
+		def wrapper():
+			args = {'id': url_id}
+			return {'args': args, 'data': data, 'is_json': True}
+
+		return wrapper()
+
+
+	def _new_url(self,data):
+		@self.api.call('/url/', method='POST')
+		def wrapper():
+			return {'data': data, 'is_json': True}
+
+		return wrapper()
+
+	def _delete_url(self,url_id):
+		@self.api.call('/url/:id', method='DELETE')
+		def wrapper():
+			args = {'id': url_id}
+			return {'args': args}
 	
 	def _build_contactinfos(self,contact):
 		contactinfos = Contact()
@@ -418,22 +552,6 @@ class Fbx():
 				setattr(infos,index,data[index])
 		return infos
 	
-	def _get_number(self,number_id):
-		@self.api.call('/number/:id')
-		def wrapper():
-			args = {'id': number_id}
-			return {'args': args}
-
-		return wrapper()
-	
-	def _set_number(self,number_id,data):
-		@self.api.call('/number/:id', method='PUT')
-		def wrapper():
-			args = {'id': number_id}
-			return {'args': args, 'data': data, 'is_json': True}
-
-		return wrapper()
-	
 	def get_number(self,number_id):
 		data = self._get_number(number_id)['data']
 		if not data['success']:
@@ -450,21 +568,24 @@ class Fbx():
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
 	
-	def _get_address(self,address_id):
-		@self.api.call('/address/:id')
-		def wrapper():
-			args = {'id': address_id}
-			return {'args': args}
-
-		return wrapper()
+	def new_number(self,numberinfos):
+		numberinfos.id = None
+		infosdict = numberinfos.fbobj2dict()
+		data = self._new_number(infosdict)['data']
+		if not data['success']:
+			return numberinfos
+		number = data['result']
+		numberinfos = self._build_fbobj(Number,number)
+		return numberinfos
 	
-	def _set_address(self,address_id,data):
-		@self.api.call('/address/:id', method='PUT')
-		def wrapper():
-			args = {'id': address_id}
-			return {'args': args, 'data': data, 'is_json': True}
-
-		return wrapper()
+	def delete_number(self,number_id):
+		if not self.permissions.contacts :
+			return False
+		data = self._delete_number(number_id)['data']
+		try:
+			return data['success']
+		except KeyError:			
+			return False
 	
 	def get_address(self,address_id):
 		data = self._get_address(address_id)['data']
@@ -482,22 +603,6 @@ class Fbx():
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
 	
-	def _get_email(self,email_id):
-		@self.api.call('/email/:id')
-		def wrapper():
-			args = {'id': email_id}
-			return {'args': args}
-
-		return wrapper()
-	
-	def _set_email(self,email_id,data):
-		@self.api.call('/email/:id', method='PUT')
-		def wrapper():
-			args = {'id': email_id}
-			return {'args': args, 'data': data, 'is_json': True}
-
-		return wrapper()
-	
 	def get_email(self,email_id):
 		data = self._get_email(email_id)['data']
 		if not data['success']:
@@ -513,22 +618,6 @@ class Fbx():
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
-	
-	def _get_url(self,url_id):
-		@self.api.call('/url/:id')
-		def wrapper():
-			args = {'id': url_id}
-			return {'args': args}
-
-		return wrapper()
-	
-	def _set_url(self,url_id,data):
-		@self.api.call('/url/:id', method='PUT')
-		def wrapper():
-			args = {'id': url_id}
-			return {'args': args, 'data': data, 'is_json': True}
-
-		return wrapper()
 	
 	def get_url(self,url_id):
 		data = self._get_url(url_id)['data']
