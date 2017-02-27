@@ -575,7 +575,7 @@ class Fbx():
 		if not data['success']:
 			return numberinfos
 		number = data['result']
-		numberinfos = self._build_fbobj(Number,number)
+		numberinfos = self.build_fbobj(Number,number)
 		return numberinfos
 	
 	def delete_number(self,number_id):
