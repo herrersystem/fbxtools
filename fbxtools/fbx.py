@@ -572,6 +572,7 @@ class Fbx():
 		numberinfos.id = None
 		infosdict = numberinfos.fbobj2dict()
 		data = self._new_number(infosdict)['data']
+		print(data)
 		if not data['success']:
 			return numberinfos
 		number = data['result']
