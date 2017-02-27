@@ -568,6 +568,22 @@ class Fbx():
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
 	
+	def _new_fbobj(self,f2call,infos):
+		infos.id = None
+		classobj = infos.__class__
+		infosdict = infos.fbobj2dict()
+		data = f2call(infosdict)['data']
+		print(data)
+		if not data['success']:
+			return infos
+		result = data['result']
+		infos = self.build_fbobj(classobj,result)
+		return infos
+	
+	def new_number(self,numberinfos):
+		return self._new_fbobj(self,self._new_number,numberinfos)
+	
+	'''
 	def new_number(self,numberinfos):
 		numberinfos.id = None
 		infosdict = numberinfos.fbobj2dict()
@@ -578,6 +594,7 @@ class Fbx():
 		number = data['result']
 		numberinfos = self.build_fbobj(Number,number)
 		return numberinfos
+	'''
 	
 	def delete_number(self,number_id):
 		if not self.permissions.contacts :
