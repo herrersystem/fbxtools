@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from fbxtools.fbx import Fbx,Contact,Number
+from fbxtools.fbx import Fbx,Contact,Number,Emails,Address,Urls
 
 ## Initialize and connect app.
 app = Fbx('http://192.168.0.254/api/v3')
@@ -131,6 +131,40 @@ nnumber = app.new_number(number)
 number1_id = nnumber.id
 print_number(app,number1_id)
 print_contact(app,nnumber.contact_id)
+print_contact(app,contact_id)
+
+# address
+
+address = Address()
+address.contact_id = contact_id
+address.city = 'Bordeaux'
+address.country = 'France'
+address.zip_code = '33000'
+address.street = 'rue du Marechal Juin'
+address.number = '10'
+address.type = 'work'
+print("\r\nCreate address :")
+print(address)
+naddress = app.new_address(address)
+print(naddress)
+address_id = naddress.id
+print_address(app,naddress.id)
+print_contact(app,naddress.contact_id)
+print_contact(app,contact_id)
+
+# email
+
+email = Emails()
+email.contact_id = contact_id
+email.email = 'alain.bidon@free.fr'
+email.type = 'work'
+print("\r\nCreate email :")
+print(email)
+nemail = app.new_email(email)
+print(nemail)
+email_id = nemail.id
+print_email(app,nemail.id)
+print_contact(app,nemail.contact_id)
 print_contact(app,contact_id)
 
 '''
