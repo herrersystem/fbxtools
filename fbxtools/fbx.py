@@ -31,7 +31,7 @@ class Fbx():
 		
 		self._boxinfos = Boxinfos()
 		self._boxinfos.boxinfos_loaded = False
-		self._calls    = {}
+		self._calls	= {}
 		self._contacts = {}
 		self._groups = {}
 
@@ -128,7 +128,7 @@ class Fbx():
 		def wrapper(track_id):
 			args = {'id': track_id}
 			return {'args': args}
-		return wrapper(track_id)        
+		return wrapper(track_id)		
 	
 	def get_app_token(self):
 		"""
@@ -348,6 +348,7 @@ class Fbx():
 	def _delete_number(self,number_id):
 		@self.api.call('/number/:id', method='DELETE')
 		def wrapper():
+			print("delete number id: %s" % number_id)
 			args = {'id': number_id}
 			return {'args': args}
 
@@ -454,6 +455,12 @@ class Fbx():
 				setattr(contactinfos,index,datetime.fromtimestamp(contact[index]))
 			elif index == "duration":
 				setattr(contactinfos,index,timedelta(seconds=contact[index]))
+			elif index == "numbers":
+				numbers = contact[index]
+				result = []
+				for number in numbers:
+					result.append(self.build_fbobj(Number,number))
+				setattr(contactinfos,index,result)
 			else:
 				setattr(contactinfos,index,contact[index])
 		return contactinfos
@@ -597,18 +604,41 @@ class Fbx():
 		if not self.permissions.contacts :
 			return False
 		data = self._delete_number(number_id)['data']
+		print(data)
 		try:
 			return data['success']
 		except KeyError:			
 			return False
 	
+	def _get_fbobj(self,f2call,Fbobjclass,id,permission=True):
+		if not permission : return Fbobjclass()
+		data = f2call(id)['data']
+		try:
+			if not data['success']:
+				return Fbobjclass()
+		except:
+			return Fbobjclass()
+		result = data['result']
+		infos = self.build_fbobj(Fbobjclass,result)
+		return infos
+		
 	def get_address(self,address_id):
-		data = self._get_address(address_id)['data']
-		if not data['success']:
-			return Address()
-		address = data['result']
-		addressinfos = self.build_fbobj(Address,address)
-		return addressinfos
+		return self._get_fbobj(self._get_address,Address,address_id,\
+								self.permissions.contacts)
+		
+	def get_number(self,number_id):
+		return self._get_fbobj(self._get_number,Number,number_id,\
+								self.permissions.contacts)
+		
+	def get_email(self,email_id):
+		return self._get_fbobj(self._get_email,Email,email_id,\
+								self.permissions.contacts)
+		
+	def get_url(self,url_id):
+		return self._get_fbobj(self._get_url,Url,url_id,\
+								self.permissions.contacts)
+		
+
 	
 	def set_address(self,address_id,addressinfos):
 		addressinfos.id = None
@@ -618,14 +648,6 @@ class Fbx():
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
 	
-	def get_email(self,email_id):
-		data = self._get_email(email_id)['data']
-		if not data['success']:
-			return Email()
-		email = data['result']
-		emailinfos = self.build_fbobj(Email,email)
-		return emailinfos
-	
 	def set_email(self,email_id,emailinfos):
 		emailinfos.id = None
 		infosdict = emailinfos.fbobj2dict()
@@ -633,14 +655,6 @@ class Fbx():
 		if not data['success']:
 			return (data['success'], data['error_code'])
 		return (data['success'], data['result'])
-	
-	def get_url(self,url_id):
-		data = self._get_url(url_id)['data']
-		if not data['success']:
-			return Email()
-		url = data['result']
-		urlinfos = self.build_fbobj(Email,url)
-		return urlinfos
 	
 	def set_url(self,url_id,urlinfos):
 		urlinfos.id = None
@@ -651,9 +665,9 @@ class Fbx():
 		return (data['success'], data['result'])
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
-	calls       = property(get_calls, None, None, "freebox calls dict")
-	groups      = property(get_groups, None, None, "freebox groups dict")
-	boxinfos    = property(get_boxinfos, None, None, "freebox infos Boxinfos")
+	calls	   = property(get_calls, None, None, "freebox calls dict")
+	groups	  = property(get_groups, None, None, "freebox groups dict")
+	boxinfos	= property(get_boxinfos, None, None, "freebox infos Boxinfos")
 	
 	def __str__(self):
 		fbstr = u"uptime: %s, disk_status: %s\r\nfirmware_version: %s, box_authenticated: %s\r\n"\
@@ -688,7 +702,13 @@ class FreeboxObj(object):
 		for field_name in self.__slots__:
 			if field_name != "__dict__":
 				try:
-					result.append("%s: '%s'" % (field_name, getattr(self,field_name)))
+					datas = getattr(self,field_name)
+					if isinstance(datas,list):
+						result.append("%s:\r\n" % (field_name))
+						for data in datas:
+							result.append("\t%s\r\n" % (data))
+					else:
+						result.append("%s: '%s'" % (field_name, datas))
 				except:
 					pass
 		return u", ".join(result)

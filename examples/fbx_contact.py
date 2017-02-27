@@ -9,27 +9,27 @@ app.get_session_token()
 
 def print_contact(app, id):
     contact = app.get_contact(id)
-    print("Contact Id: %s" % id)
+    print("\r\nContact Id: %s" % id)
     print(unicode(contact))
 
 def print_number(app, id):
     number = app.get_number(id)
-    print("Number Id: %s" % id)
+    print("\r\nNumber Id: %s" % id)
     print(unicode(number))
 
 def print_address(app, id):
     address = app.get_address(id)
-    print("Address Id: %s" % id)
+    print("\r\nAddress Id: %s" % id)
     print(unicode(address))
 
 def print_email(app, id):
     email = app.get_email(id)
-    print("Email Id: %s" % id)
+    print("\r\nEmail Id: %s" % id)
     print(unicode(email))
 
 def print_url(app, id):
     url = app.get_url(id)
-    print("Url: %s" % id)
+    print("\r\nUrl: %s" % id)
     print(unicode(url))
     
 '''
@@ -115,6 +115,7 @@ number.contact_id = contact_id
 number.number = '1234567890'
 number.type = 'mobile'
 print("\r\nCreate number :")
+print("===============")
 print(number)
 nnumber = app.new_number(number)
 print(nnumber)
@@ -123,14 +124,28 @@ print_number(app,nnumber.id)
 print_contact(app,nnumber.contact_id)
 print_contact(app,contact_id)
 
+
+number = Number()
+number.contact_id = contact_id
 number.number = '1234567891'
 number.type = 'fixed'
 print("\r\nCreate number :")
+print("===============")
 print(number)
 nnumber = app.new_number(number)
 number1_id = nnumber.id
 print_number(app,number1_id)
 print_contact(app,nnumber.contact_id)
+print_contact(app,contact_id)
+
+contact = app.get_contact(contact_id)
+for number in contact.numbers:
+    number_id = number.id
+    print("\r\nDelete number id: %s" % number_id)
+    print("=====================")
+    print(number)
+    print(app.delete_number(number_id))
+    print_number(app,number_id)
 print_contact(app,contact_id)
 
 # address
@@ -144,9 +159,10 @@ address.street = 'rue du Marechal Juin'
 address.number = '10'
 address.type = 'work'
 print("\r\nCreate address :")
-print(address)
+print("================")
+print(unicode(address))
 naddress = app.new_address(address)
-print(naddress)
+print(unicode(naddress))
 address_id = naddress.id
 print_address(app,naddress.id)
 print_contact(app,naddress.contact_id)
