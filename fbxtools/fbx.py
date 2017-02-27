@@ -581,7 +581,7 @@ class Fbx():
 		return infos
 	
 	def new_number(self,numberinfos):
-		return self._new_fbobj(self,self._new_number,numberinfos)
+		return self._new_fbobj(self._new_number,numberinfos)
 	
 	'''
 	def new_number(self,numberinfos):
