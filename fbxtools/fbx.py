@@ -465,15 +465,6 @@ class Fbx():
 				setattr(contactinfos,index,contact[index])
 		return contactinfos
 	
-	def get_contact(self,contact_id):
-		data = self._get_contact(contact_id)['data']
-		#print(data)
-		if not data['success']:
-			return result
-		contact = data['result']
-		contactinfos = self._build_contactinfos(contact)
-		return contactinfos
-	
 	def new_contact(self,contactinfos):
 		contactinfos.id = None
 		infosdict = contactinfos.fbobj2dict()
@@ -555,6 +546,22 @@ class Fbx():
 		for index in data:
 			if data[index] == None:
 				pass
+			if isinstance(data[index],list):
+				datalist = data[index]
+				result = []
+				sub_class = Number
+				for datadict in datalist:
+					for idx in datadict:
+						if idx == 'url':
+							sub_class = Url
+						elif idx == 'email':
+							sub_class = Email
+						elif idx == 'city':
+							sub_class = Address
+					infoslist = self.build_fbobj(sub_class,datadict)
+					#print('class: %s, infoslist:%s' % (sub_class,unicode(infoslist)))
+					result.append(infoslist)
+				setattr(infos,index,result)
 			else:
 				setattr(infos,index,data[index])
 		return infos
@@ -621,6 +628,19 @@ class Fbx():
 		result = data['result']
 		infos = self.build_fbobj(Fbobjclass,result)
 		return infos
+	
+	def get_contact(self,contact_id):
+		return self._get_fbobj(self._get_contact,Contact,contact_id,\
+								self.permissions.contacts)
+		'''
+		data = self._get_contact(contact_id)['data']
+		#print(data)
+		if not data['success']:
+			return result
+		contact = data['result']
+		contactinfos = self._build_contactinfos(contact) # specifique
+		return contactinfos
+		'''
 		
 	def get_address(self,address_id):
 		return self._get_fbobj(self._get_address,Address,address_id,\
