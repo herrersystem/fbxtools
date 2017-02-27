@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from fbxtools.fbx import Fbx,Contact,Number,Emails,Address,Urls
+from fbxtools.fbx import Fbx,Contact,Number,Email,Address,Url
 
 ## Initialize and connect app.
 app = Fbx('http://192.168.0.254/api/v3')
@@ -154,7 +154,7 @@ print_contact(app,contact_id)
 
 # email
 
-email = Emails()
+email = Email()
 email.contact_id = contact_id
 email.email = 'alain.bidon@free.fr'
 email.type = 'work'
