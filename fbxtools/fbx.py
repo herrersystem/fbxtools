@@ -9,6 +9,7 @@ from hashlib import sha1
 from apize.apize import Apize
 from fbxtools.exceptions import *
 from fbxtools.utils import *
+from fbxtools.fbxo import *
 
 import time
 from datetime import timedelta, datetime
@@ -698,6 +699,7 @@ class Fbx():
 		% (self.boxinfos.board_name,self.boxinfos.mac,self.boxinfos.serial)
 		return fbstr			
 
+'''
 
 class FreeboxObj(object):
 	__slots__= ()
@@ -774,3 +776,4 @@ class Email(FreeboxObj):
 class Url(FreeboxObj):
 	__slots__= "__dict__", "url", "contact_id", "type", "id"
 	
+'''
