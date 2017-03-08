@@ -271,46 +271,62 @@ class Fbx():
 		self._calls = calls.get_by_id()
 		for call in self._calls.calls:
 			self._build_callinfos(call)
-		return self._calls.calls	
+		return self._calls.calls
+
+	def get_interfaces(self):
+		if not self.permissions.explorer :
+			self._interfaces = []
+			return self._interfaces.interfaces
+		interfaces = Interfaces(fbx=self)
+		self._interfaces = interfaces.get_by_id()
+		return self._interfaces.interfaces	
+
+	def get_lanhosts(self,args=None):
+		if not self.permissions.explorer :
+			self._lanhosts = []
+			return self._lanhosts.lanhosts
+		lanhosts = LanHosts(fbx=self)
+		self._lanhosts = lanhosts.get_by_id(args=args)
+		return self._lanhosts.lanhosts	
 
 
 	#
 	# get fbx object
 	#
 			
-	def _get_fbobj(self,Fbobjclass,id,permission=True):
+	def _get_fbobj(self,Fbobjclass,id=None,permission=True):
 		if not permission : return Fbobjclass()
 		fbxobj = Fbobjclass(fbx=self)
 		fbxobj = fbxobj.get_by_id(id=id)
 		return fbxobj
 	
 	def get_contact(self,contact_id):
-		return self._get_fbobj(Contact,contact_id,\
-								self.permissions.contacts)
+		return self._get_fbobj(Contact,id=contact_id,\
+								permission=self.permissions.contacts)
 		
 	def get_address(self,address_id):
 		return self._get_fbobj(Address,address_id,\
-								self.permissions.contacts)
+								permission=self.permissions.contacts)
 		
 	def get_number(self,number_id):
-		return self._get_fbobj(Number,number_id,\
-								self.permissions.contacts)
+		return self._get_fbobj(Number,id=number_id,\
+								permission=self.permissions.contacts)
 		
 	def get_email(self,email_id):
-		return self._get_fbobj(Email,email_id,\
-								self.permissions.contacts)
+		return self._get_fbobj(Email,id=email_id,\
+								permission=self.permissions.contacts)
 		
 	def get_url(self,url_id):
-		return self._get_fbobj(Url,url_id,\
-								self.permissions.contacts)
+		return self._get_fbobj(Url,id=url_id,\
+								permission=self.permissions.contacts)
 		
 	def get_group(self,group_id):
-		return self._get_fbobj(Group,group_id,\
-								self.permissions.contacts)
+		return self._get_fbobj(Group,id=group_id,\
+								permission=self.permissions.contacts)
 		
 	def get_call(self,call_id):
-		return self._get_fbobj(Call,call_id,\
-								self.permissions.calls)
+		return self._get_fbobj(Call,id=call_id,\
+								permission=self.permissions.calls)
 	#
 	# set fbx object
 	#		
@@ -416,10 +432,11 @@ class Fbx():
 								
 
 	permissions = property(get_permissions, None, None, "freebox app permissions Permissions")
-	calls	    = property(get_calls, None, None, "freebox calls dict")
-	contacts    = property(get_contacts_all, None, None, "freebox contacts dict")
-	groups	    = property(get_groups, None, None, "freebox groups dict")
+	calls	    = property(get_calls, None, None, "freebox calls list")
+	contacts    = property(get_contacts_all, None, None, "freebox contacts list")
+	groups	    = property(get_groups, None, None, "freebox groups list")
 	boxinfos	= property(get_boxinfos, None, None, "freebox infos Boxinfos")
+	interfaces  = property(get_interfaces, None, None, "freebox interfaces list")
 	
 	def __str__(self):
 		fbstr = u"uptime: %s, disk_status: %s\r\nfirmware_version: %s, box_authenticated: %s\r\n"\

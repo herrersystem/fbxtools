@@ -17,7 +17,8 @@ for arg in sys.argv :
 		mute = True
 
 ## Initialize and connect app.
-app = Fbx('http://192.168.0.254/api/v3')
+#app = Fbx('http://192.168.0.254/api/v3')
+app = Fbx('https://afer77.freeboxos.fr:1459/api/v3')
 app.get_session_token()
 
 

@@ -11,7 +11,7 @@ class FreeboxObj(object):
 
 	_url_get = ''
 
-	def __init__(self, fbx=None, data=None, attribs={'id': {}}):
+	def __init__(self, fbx=None, data={}, attribs={'id': {}},args={}):
 		self._attribs = attribs
 		self._fbx = None
 		if fbx != None:
@@ -25,14 +25,16 @@ class FreeboxObj(object):
 				except AttributeError:
 					id = 0
 				if id:
-					self = self.get_by_id(contact_id=data['id'])
+					self = self.get_by_id(id=data['id'],args=args)
 				else:
+					pass
 					self = self.new_fbxobj(data)
 			else:
 				if 'id' in data:
-					self = self.get_by_id(contact_id=data['id'])
+					self = self.get_by_id(id=data['id'],args=args)
 				else:
-					self = self.new_fbxobj(data)
+					pass
+					#self = self.new_fbxobj(data)
 			
 	def load_data(self, data):
 		if isinstance(data, dict):
@@ -57,7 +59,17 @@ class FreeboxObj(object):
 							elif self._attribs[field_name]['type_info'] == "Group":
 								infos = Group(data=elem)	
 							elif self._attribs[field_name]['type_info'] == "Contacts":
-								infos = Contacts(data=elem)	
+								infos = Contacts(data=elem)		
+							elif self._attribs[field_name]['type_info'] == "Interface":
+								infos = Interface(data=elem)
+							elif self._attribs[field_name]['type_info'] == "LanHostName":
+								infos = LanHostName(data=elem)
+							elif self._attribs[field_name]['type_info'] == "LanHostL3Connectivity":
+								infos = LanHostL3Connectivity(data=elem)
+							elif self._attribs[field_name]['type_info'] == "LanHost":
+								infos = LanHost(data=elem)
+							elif self._attribs[field_name]['type_info'] == "LanHosts":
+								infos = LanHosts(data=elem)
 							if infos != None:						
 								obj_list.append(infos)
 						setattr(self, field_name, obj_list)
@@ -65,6 +77,9 @@ class FreeboxObj(object):
 						if self._attribs[field_name]['type_info'] == datetime:
 							setattr(self, field_name, datetime.fromtimestamp(data[field_name]))
 							#setattr(self, field_name, data[field_name])
+						elif field_name == 'l2ident':
+							infos = LanHostL2Ident(data=data[field_name])
+							setattr(self, field_name, infos)
 						else:
 							setattr(self, field_name, data[field_name])
 		elif isinstance(data, FreeboxObj):
@@ -87,14 +102,35 @@ class FreeboxObj(object):
 				elif self._attribs[field_name]['type_info'] == "Group":
 					fbxobj_type = "Groups"
 					break
+				elif self._attribs[field_name]['type_info'] == "Interface":
+					fbxobj_type = "Interfaces"
+					break
+				elif self._attribs[field_name]['type_info'] == "LanHostName":
+					fbxobj_type = "Names"
+					break
+				elif self._attribs[field_name]['type_info'] == "LanHostL3Connectivity":
+					fbxobj_type = "LanHostL3Connectivity"
+					break
+				elif self._attribs[field_name]['type_info'] == "LanHost":
+					fbxobj_type = "LanHosts"
+					break
 			obj_list = []
 			for elem in data:
 				if fbxobj_type == "Contacts":
-					infos = Contact(data=elem)
+					infos = Contact()
 				elif fbxobj_type == "Calls":
-					infos = Call(data=elem)
+					infos = Call()
 				elif fbxobj_type == "Groups":
-					infos = Group(data=elem)
+					infos = Group()
+				elif fbxobj_type == "Interfaces":
+					infos = Interface()
+				elif fbxobj_type == "L3connectivities":
+					infos = LanHostL3Connectivity()
+				elif fbxobj_type == "Names":
+					infos = LanHostName()
+				elif fbxobj_type == "LanHosts":
+					infos = LanHost()
+				infos.load_data(elem)
 				obj_list.append(infos)
 			if fbxobj_type == "Contacts":
 				setattr(self, 'contacts', obj_list)
@@ -102,41 +138,64 @@ class FreeboxObj(object):
 				setattr(self, 'calls', obj_list)
 			elif fbxobj_type == "Groups":
 				setattr(self, 'groups', obj_list)
-					
-	def _get_by_id(self,url,id=None,contact_id=None,data=None,params={}):
+			elif fbxobj_type == "Interfaces":
+				setattr(self, 'interfaces', obj_list)
+			elif fbxobj_type == "Names":
+				setattr(self, 'names', obj_list)
+			elif fbxobj_type == "L3connectivities":
+				setattr(self, 'l3connectivities', obj_list)
+			elif fbxobj_type == "LanHosts":
+				setattr(self, 'lanhosts', obj_list)
+	
+	def dump_request(self,url='',response='',args={},params={},data={}):	
+		print("url: %s" % url)
+		print("args: %s" % args)
+		print("params: %s" % params)
+		print("data: %s" % data)
+		print("response: %s" % response)
+		
+		return
+	
+	def _get_by_id(self,url,**kwargs):
 		@self._fbx.api.call(url)
-		def wrapper():
-			if data != None:
-				args = {'args': data, 'is_json': True}
-				return {'args': args, 'params': params}
+		def wrapper():			
+			id = kwargs.get('id',None)
+			contact_id = kwargs.get('contact_id',None)
+			data = kwargs.get('data',{})
+			args = kwargs.get('args',{})
+			params = kwargs.get('params',{})
+			
 			if id != None:
-				if contact_id == None :
-					args = {'id': id}
-				else:
-					args = {'id': id, 'contact_id': contact_id}
-				return {'args': args, 'params': params}
-			else:
-				return {'params': params}
-
+				args['id'] = id
+			
+			if contact_id != None:
+				args['contact_id'] = contact_id
+			
+			#print({'args': args, 'params': params, 'is_json': True})
+			return {'args': args, 'params': params, 'is_json': True}
+							
 		return wrapper()
 					
-	def get_by_id(self,id=None,contact_id=None,data=None,params={}):
+	def get_by_id(self,id=None,data={},params={},args={}):
+		url = self._url_get
+		#print("id: %s" % id)
 		if self._fbx == None :
-			#print('get_by_id',self.__class__,id,contact_id)
 			return self
-		if id == None:
-			datar = self._get_by_id(self._url_get,data=data,params=params)['data']
-		else:
-			datar = self._get_by_id(self._url_get+':id',id,data=data,params=params)['data']
-		#print(datar)
+		if id != None:
+			url += ':id'
+		#self.dump_request(url=url,args=args,params=params,data=data)
+		datar = self._get_by_id(url,id=id,params=params,data=data,args=args)['data']
 		try:
 			if not datar['success']:
-				return self
+				self.dump_request(url=url,response=datar,args=args,params=params,data=data)
+				return self	
 		except KeyError:
-			return self
+			self.dump_request(url=url,response=datar,args=args,params=params,data=data)
+			return self	
+
 		result = datar['result']
 		self.load_data(result)
-		return self
+		return self		
 					
 	def _set_by_id(self,url,id,data):
 		@self._fbx.api.call(url, method='PUT')
@@ -342,6 +401,43 @@ class Groups(FreeboxObj):
 		'groups':   {'list': True,'type_info': "Group"}\
 	}):
 		FreeboxObj.__init__(self, fbx, data, attribs)
+
+class Interfaces(FreeboxObj):
+	
+	_url_get = '/lan/browser/interfaces/'
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'interfaces':   {'list': True,'type_info': "Interface"}\
+	}):
+		FreeboxObj.__init__(self, fbx=fbx, data=data, attribs=attribs)
+
+class Names(FreeboxObj):
+	
+	_url_get = ''
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'names':   {'list': True,'type_info': "LanHostName"}\
+	}):
+		FreeboxObj.__init__(self, fbx=fbx, data=data, attribs=attribs)
+
+class L3connectivities(FreeboxObj):
+	
+	_url_get = ''
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'l3connectivities':   {'list': True,'type_info': "LanHostL3Connectivity"}\
+	}):
+		FreeboxObj.__init__(self, fbx=fbx, data=data, attribs=attribs)
+
+class LanHosts(FreeboxObj):
+	
+	_url_get = '/lan/browser/:interface/'
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'lanhosts':   {'list': True,'type_info': "LanHost"}\
+	}):
+		FreeboxObj.__init__(self, fbx, data, attribs)
+	
 		
 
 class Contact(FreeboxObj):
@@ -481,5 +577,68 @@ class Url(FreeboxObj):
 		'contact_id': {'list': False,'type_info': int},\
 		'type':       {'list': False,'type_info': str},\
 		'id':         {'list': False,'type_info': int}\
+	}):
+		FreeboxObj.__init__(self, fbx, data, attribs)
+
+class Interface(FreeboxObj):
+	
+	_url_get = '/lan/browser/interfaces/'
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'name':       {'list': False,'type_info': str},\
+		'host_count': {'list': False,'type_info': int}\
+	}):
+		FreeboxObj.__init__(self, fbx=None, data=data, attribs=attribs)
+
+
+class LanHost(FreeboxObj):
+	
+	_url_get = '/lan/browser/:interface/'
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'id':           {'list': False,'type_info': int},\
+		'primary_name': {'list': False,'type_info': str},\
+		'host_type':    {'list': False,'type_info': str},\
+		'primary_name_manual': {'list': False,'type_info': bool},\
+		'l2ident':      {'list': False,'type_info': "LanHostL2Ident"},\
+		'vendor_name':  {'list': False,'type_info': str},\
+		'persistent':   {'list': False,'type_info': bool},\
+		'reachable':    {'list': False,'type_info': bool},\
+		'last_time_reachable': {'list': False,'type_info': datetime},\
+		'active':       {'list': False,'type_info': bool},\
+		'last_activity':{'list': False,'type_info': datetime},\
+		'names':        {'list': True,'type_info': "LanHostName"},\
+		'l3connectivities':    {'list': True,'type_info': "LanHostL3Connectivity"}\
+	},id=None,args={'interface': 'pub'}):
+		self._interface_name = args['interface']
+		if id !=None:
+			data['id'] = id
+		FreeboxObj.__init__(self, fbx=fbx, data=data, args=args, attribs=attribs)
+
+class LanHostL2Ident(FreeboxObj):
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'id':           {'list': False,'type_info': int},\
+		'type':         {'list': False,'type_info': str},\
+	}):
+		FreeboxObj.__init__(self, fbx, data, attribs)
+
+class LanHostName(FreeboxObj):
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'name':           {'list': False,'type_info': str},\
+		'source':         {'list': False,'type_info': str},\
+	}):
+		FreeboxObj.__init__(self, fbx, data, attribs)
+
+class LanHostL3Connectivity(FreeboxObj):
+	
+	def __init__(self, fbx=None, data={}, attribs={\
+		'addr':           {'list': False,'type_info': str},\
+		'af':         {'list': False,'type_info': str},\
+		'active':       {'list': False,'type_info': bool},\
+		'reachable':    {'list': False,'type_info': bool},\
+		'last_activity':{'list': False,'type_info': datetime},\
+		'last_time_reachable':  {'list': False,'type_info': datetime},\
 	}):
 		FreeboxObj.__init__(self, fbx, data, attribs)

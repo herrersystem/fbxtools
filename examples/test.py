@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 from fbxtools.fbx import Fbx
-from fbxtools.fbxo import Contact,Number,Email,Address,Url,Contacts,Calls,Call,Groups,Group
+from fbxtools.fbxo import Contact,Number,Email,Address,Url,Contacts,Calls,Call,Groups,Group,LanHost,LanHosts
 
 ## Initialize and connect app.
 app = Fbx('http://192.168.0.254/api/v3')
@@ -74,17 +74,39 @@ def main():
 
 	# Permissions
 	print("\r\nPermisssions:")
+	print("=============")
 	print(app.permissions)
 	
+	# Etat Freebox
 	print("\r\nEtat Freebox:")
+	print("=============")
 	print(app.boxinfos)
 	print("")
-			
+	
+	# Interfaces
+	print("\r\nInterfaces reseau:")
+	print("==================")
+	for interface in app.interfaces:
+		print(interface)
+	print("")
+	
+	# Lan hosts
+	interface = app.interfaces[0].name
+	print("\r\nHosts interface %s (active):\r\n" % interface)
+	lanhosts = app.get_lanhosts(args={'interface': interface})
+	for lanhost in lanhosts:
+		if lanhost.active:
+			print("%s: %s, %s" % (lanhost.l2ident.id,lanhost.primary_name,lanhost.vendor_name))
+
+	# Test contacts and related objects
+	print("\r\nTest contacts and related objects")
+	print("=================================")
+	
 	# Group
 	
 	for group in app.groups:
 		if not (group.id in (1,2)):
-			#app.delete_group(group.id)
+			app.delete_group(group.id)
 			pass
 
 	# test create group
