@@ -53,12 +53,8 @@ if __name__ == "__main__":
 	cursor.execute(query)
 	for row in cursor :
 		last_id = row[0]
-
-
-	calls = Calls(fbx=app)
-	calls = calls.get_by_id()
 	
-	for call in calls.calls:
+	for call in app.calls:
 		nbcalls += 1
 		st = str(call.datetime)
 		curr_id = int(call.id)

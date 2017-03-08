@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from fbxtools.fbx import Fbx,Contact,Number,Email,Address,Url
+from fbxtools.fbx import *
 
 ## Initialize and connect app.
 app = Fbx('http://192.168.0.254/api/v3')
@@ -32,63 +32,6 @@ def print_url(app, id):
     print("\r\nUrl: %s" % id)
     print(unicode(url))
     
-'''
-
-### Number
-number = app.get_number(100)
-print_number(app,100)
-
-number.is_default = True
-(success, result) = app.set_number(100,number)
-
-print_number(app,100)
-number.is_default = False
-(success, result) = app.set_number(100,number)
-
-print_number(app,100)
-### Address
-print_address(app,100)
-address = app.get_address(100)
-address.type = 'work'
-(success, result) = app.set_address(100,address)
-print_address(app,100)
-
-address.type = 'home'
-(success, result) = app.set_address(100,address)
-print_address(app,100)
-### Email
-print_email(app,100)
-email = app.get_email(100)
-email.type = 'work'
-(success, result) = app.set_email(100,email)
-print_email(app,100)
-
-email.type = 'home'
-(success, result) = app.set_email(100,email)
-print_url(app,100)
-### Email
-print_url(app,10)
-url = app.get_url(10)
-
-url.type = 'profile'
-(success, result) = app.set_url(10,url)
-print_url(app,10)
-
-url.type = 'blog'
-(success, result) = app.set_url(10,url)
-print_url(app,10)
-
-url.type = 'site'
-(success, result) = app.set_url(10,url)
-print_url(app,10)
-
-url.type = 'other'
-(success, result) = app.set_url(10,url)
-print_url(app,10)
-
-#print(app.delete_contact(496))
-'''
-
 
 #
 # Contact
@@ -96,15 +39,15 @@ print_url(app,10)
 
 # contact
 
-contact = Contact()
-contact.first_name = "Alain"
-contact.last_name = "Bidon"
-contact.display_name = "BIDON, Alain"
-contact.notes = "Contact de test"
+contact = Contact(fbx=app)
+contact.first_name = "John"
+contact.last_name = "Doe"
+contact.display_name = "DOE, John"
+contact.notes = "Fake contact"
 
 print("\r\nCreate contact :")
 print(contact)
-ncontact = app.new_contact(contact)
+contact = app.new_contact(contact)
 contact_id = ncontact.id
 print_contact(app,contact_id)
 
@@ -117,8 +60,11 @@ number.type = 'mobile'
 print("\r\nCreate number :")
 print("===============")
 print(number)
-nnumber = app.new_number(number)
+nnumber = contact.add_number(number)
 print(nnumber)
+
+quit()
+
 number_id = nnumber.id
 print_number(app,nnumber.id)
 print_contact(app,nnumber.contact_id)
