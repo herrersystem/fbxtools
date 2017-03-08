@@ -106,7 +106,7 @@ def main():
 	
 	for group in app.groups:
 		if not (group.id in (1,2)):
-			app.delete_group(group.id)
+			#app.delete_group(group.id)
 			pass
 
 	# test create group
