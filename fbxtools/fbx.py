@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import hmac
+import hmac, hashlib
 from apize.apize import Apize
 from fbxtools.exceptions import *
 from fbxtools.utils import *
@@ -28,7 +28,7 @@ class Fbx():
 	def connect_app(self, app_token, app_id, challenge):
 		@self.api.call('/login/session/', method='POST')
 		def wrapper(app_token, app_id, challenge):
-			h = hmac.new(app_token.encode(), challenge, 'sha1')
+			h = hmac.new(app_token.encode(), challenge, hashlib.sha1)
 			password = h.hexdigest()
 			data = {'app_id': app_id, 'password': password}
 			headers = {'X-Fbx-App-Auth': app_token}
